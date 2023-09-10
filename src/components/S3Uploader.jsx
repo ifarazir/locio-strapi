@@ -1,8 +1,7 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetBucketCorsCommand, PutBucketCorsCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { nanoid } from "nanoid";
 
 export default async function S3Uploader(voice) {
-  // S3 Bucket Name
   console.log(voice);
 
   const client = new S3Client({
@@ -23,6 +22,5 @@ export default async function S3Uploader(voice) {
   const command = new PutObjectCommand(params);
   const data = await client.send(command);
   console.log(data);
-
 
 }
