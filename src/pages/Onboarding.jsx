@@ -130,7 +130,7 @@ export function NewVoiceDrawer(props) {
 
                                     <div>
                                         <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
-                                        <span className="text-xs text-neutral-400 px-3">ورود آدرس ایمیل اختیاری است</span>
+                                        <span className="text-xs text-neutral-400 px-3">شما می‌توانید فایل صدایتان را در صورت وارد کردن ایمیل دریافت کنید.</span>
                                     </div>
 
                                     <div className="hidden">
