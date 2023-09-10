@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+*
+*	Name:			Ravi Fonts
+*	Version:			2.0
+*	Author:			Reza Bakhtiarifard (rbakhtiarifard.ir)
+*	Created on:		April 2023
+*	Updated on:		April 2023
+*	Vendor:			http://fontiran.com
+*	Copyright:		Commercial/Proprietary Software
+--------------------------------------------------------------------------------------
+فونت پیکان یک نرم افزار مالکیتی محسوب می شود. جهت آگاهی از قوانین استفاده از این فونت ها لطفا به وب سایت (فونت ایران دات کام) مراجعه نمایید
+--------------------------------------------------------------------------------------
+Ravi fonts are considered a proprietary software. To gain information about the laws regarding the use of these fonts, please visit www.fontiran.com 
+--------------------------------------------------------------------------------------
+This set of fonts are used in this project under the license: (.....)
+------------------------------------------------------------------------------------- fonts/-
+*	
+**/
+
+
+@font-face {
+    font-family: Ravi;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/woff/RaviFaNum-Regular.woff') format('woff'),
+        url('fonts/woff2/RaviFaNum-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: Ravi;
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/woff/RaviFaNum-Bold.woff') format('woff'),
+        url('fonts/woff2/RaviFaNum-Bold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: Ravi;
+    font-style: normal;
+    font-weight: 950;
+    src: url('fonts/woff/RaviFaNum-ExtraBlack.woff') format('woff'),
+        url('fonts/woff2/RaviFaNum-ExtraBlack.woff2') format('woff2');
+}
+
 .playlist {
     text-align: left;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
@@ -28,7 +72,7 @@
 }
 
 .uppy-DragDrop-container {
-    font-family: 'Vazirmatn' !important;
+    font-family: Ravi !important;
 }
 
 .monospace {

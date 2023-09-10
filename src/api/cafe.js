@@ -16,23 +16,12 @@ const youzAxios = axios.create({
     }
 });
 
-export const GetCafe = async (request) => {
-    return youzAxios.post('/api/v1/auth/register', request).then((response) => {
-        if (response.data.status == 'success') {
-            return {
-                status: 'success',
-                variant: 'default',
-                message: response.data.message,
-                response: response
-            }
-        }
-        else {
-            return {
-                status: 'error',
-                variant: 'error',
-                message: response?.data?.message,
-                response: response
-            }
+export const GetCafe = async (cafeID) => {
+    return youzAxios.get('/api/cafes/' + cafeID).then((response) => {
+        return {
+            status: 'success',
+            variant: 'default',
+            response: response.data.data.attributes
         }
     }).catch((response) => {
         return {

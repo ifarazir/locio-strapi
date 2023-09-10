@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Vazirmatn', ...fontFamily.sans],
+        sans: ['Ravi', ...fontFamily.sans],
       },
     }
   },

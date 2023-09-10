@@ -6,8 +6,8 @@ import { Fragment, useEffect, useState } from "react";
 import { GetDiaries } from "../api/diary";
 import { Transition, Dialog } from "@headlessui/react";
 import Input from "../utils/Input";
-import Uploader from "../utils/Uploder";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import S3Uploader from "../components/S3Uploader";
 
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
@@ -37,10 +37,13 @@ export function NewVoiceDrawer(props) {
         audio.src = url;
         audio.controls = true;
         document.querySelector('#player-box').append(audio);
+        setVoice(blob);
     };
 
     async function handleDiarySubmit() {
-
+        // const wavBlob = await getWaveBlob(voice, true);
+        // const response = await APIUpload(wavBlob);
+        S3Uploader(voice);
     }
 
     function closeModal() {
@@ -51,7 +54,7 @@ export function NewVoiceDrawer(props) {
         setIsOpen(true)
     }
 
-    function handleRemoveVoice () {
+    function handleRemoveVoice() {
         document.querySelector('#player-box').innerHTML = '';
     }
 
@@ -126,7 +129,7 @@ export function NewVoiceDrawer(props) {
                                 <div className="mt-4">
                                     <button
                                         type="button"
-                                        className="w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-3 text-sm text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
+                                        className="w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
                                         onClick={handleDiarySubmit}
                                     >
                                         ثبت خاطره

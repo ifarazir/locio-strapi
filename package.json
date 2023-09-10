@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.409.0",
     "@headlessui/react": "^1.7.17",
     "@uppy/audio": "^1.1.2",
     "@uppy/core": "^3.4.0",
@@ -21,15 +22,20 @@
     "@uppy/react": "^3.1.3",
     "@uppy/tus": "^3.1.3",
     "@uppy/xhr-upload": "^3.3.2",
+    "aws-sdk": "^2.1454.0",
     "axios": "^1.5.0",
     "framer-motion": "^10.16.2",
+    "fs": "^0.0.1-security",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "nanoid": "^4.0.2",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-audio-player": "^0.17.0",
     "react-audio-visualize": "^1.1.3",
     "react-audio-voice-recorder": "^2.1.2",
     "react-auth-kit": "^2.12.5",
+    "react-aws-s3": "^1.5.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.10.1",
@@ -39,7 +45,8 @@
     "recoil": "^0.7.7",
     "sort-by": "^1.2.0",
     "styled-components": "^6.0.7",
-    "wavesurfer.js": "^7.1.5"
+    "wavesurfer.js": "^7.1.5",
+    "webm-to-wav-converter": "^1.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
