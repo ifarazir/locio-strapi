@@ -43,9 +43,8 @@ export default function LocioModal({ isOpen, onClose, cafe }) {
                     <div className="z-30 fixed inset-0 flex w-screen items-center justify-center p-4">
                         <Dialog.Panel className={'relative mx-auto w-full max-w-xl bg-white rounded-xl'}>
                             <div className="px-5 py-10 shadow-sm">
-                                <Dialog.Title className={'text-xl font-bold mt-2 mb-5'}>ردپای صدای خاطرات، در جغرافیای حضورتان</Dialog.Title>
                                 <Dialog.Description className={'text-lg'}>
-                                    لوکیو تجربه‌ای از داستان‌های صوتی مکان محور است که به شما امکان ضبط، اشتراک و شنیدن داستان‌ها، گفت‌ و گوها و آواهای موجود در لحظه‌ را می‌دهد.
+                                    {cafe?.modal}
                                 </Dialog.Description>
                             </div>
 
