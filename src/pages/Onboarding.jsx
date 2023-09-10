@@ -3,11 +3,14 @@ import Header from "../components/Header";
 import { Mic, Stop, Trash } from "react-ionicons";
 import AudioSection from "../components/AudioSection";
 import { Fragment, useEffect, useState } from "react";
-import { GetDiaries } from "../api/diary";
+import { GetDiaries, StoreDiary } from "../api/diary";
 import { Transition, Dialog } from "@headlessui/react";
 import Input from "../utils/Input";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import S3Uploader from "../components/S3Uploader";
+import { getWaveBlob } from "webm-to-wav-converter";
+import { APIUpload } from "../api/uploader";
+import { toast } from "react-toastify";
 
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
@@ -41,9 +44,43 @@ export function NewVoiceDrawer(props) {
     };
 
     async function handleDiarySubmit() {
-        // const wavBlob = await getWaveBlob(voice, true);
-        // const response = await APIUpload(wavBlob);
-        S3Uploader(voice);
+        const wavBlob = await getWaveBlob(voice, true);
+        const response = await APIUpload(wavBlob);
+
+        const voiceID = response?.response?.data[0]?.id;
+        if (voiceID) {
+            if (!document.querySelector('input[name="name"]').value) {
+                toast.error('لطفا نام خود را وارد کنید');
+            }
+            else {
+                const diaryName = document.querySelector('input[name="name"]').value;
+                const diaryEmail = document.querySelector('input[name="email"]').value;
+                console.log(response?.response?.data[0]?.id);
+
+                const diary = {
+                    "data": {
+                        "Name": diaryName,
+                        "Email": diaryEmail,
+                        "voice": voiceID,
+                        "cafe": import.meta.env.VITE_CAFE_ID
+                    }
+                }
+
+                const diaryResponse = await StoreDiary(diary);
+
+                if (diaryResponse?.response?.data?.data?.id) {
+                    toast.success('خاطره شما با موفقیت ثبت شد');
+                    setIsOpen(false);
+                    window.location.reload();
+                }
+            }
+        }
+        else {
+            toast.error('لطفا ابتدا یک صدا ضبط کنید');
+        }
+
+
+
     }
 
     function closeModal() {
@@ -91,7 +128,10 @@ export function NewVoiceDrawer(props) {
                                 <div className="mt-2 space-y-3">
                                     <Input title="اسم شما" name="name" placeholder="" />
 
-                                    <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
+                                    <div>
+                                        <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
+                                        <span className="text-xs text-neutral-400 px-3">ورود آدرس ایمیل اختیاری است</span>
+                                    </div>
 
                                     <div className="hidden">
                                         <AudioRecorder

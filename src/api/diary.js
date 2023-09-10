@@ -43,3 +43,22 @@ export const GetDiaries = async (cafeID) => {
         }
     })
 };
+
+
+export const StoreDiary = async (diary) => {
+    return youzAxios.post('/api/diaries', diary).then((response) => {
+        return {
+            status: 'success',
+            variant: 'default',
+            message: 'success',
+            response: response
+        }
+    }).catch((response) => {
+        return {
+            status: 'error',
+            variant: 'error',
+            message: 'Error! Please try again later.',
+            response: response
+        }
+    })
+};

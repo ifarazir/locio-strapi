@@ -3,6 +3,7 @@ import CafeInfoModal from "./CafeInfoModal";
 import { useEffect, useState } from "react";
 import { GetCafe } from "../api/cafe";
 import LocioModal from "./LocioModal";
+import { ToastContainer, Zoom } from "react-toastify";
 
 export default function Header() {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function Header() {
     }
 
     useEffect(() => {
-        if(localStorage.getItem('is-firstTiem')) {
+        if (localStorage.getItem('is-firstTiem')) {
             setIsLocioModalOpen(false);
         }
         else {
@@ -39,13 +40,15 @@ export default function Header() {
                     <button onClick={() => setIsInfoModalOpen(true)}>
                         <InformationCircleOutline color={'#fff'} />
                     </button>
-                    
+
                 </div>
                 <CafeInfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
                 <LocioModal isOpen={isLocioModalOpen} onClose={() => closeLocioModal()} cafe={cafe} />
             </header>
             <div className=" text-center shadow bg-cover bg-center h-[200px]" style={{ backgroundImage: "url('./images/nolan-thumbnail.png')" }}>
             </div>
+
+            <ToastContainer transition={Zoom} closeButton={false} position="bottom-center" rtl limit={1} autoClose={5000} hideProgressBar theme="dark" bodyClassName={'text-[14px] leading-[24px] !p-0 !my-0'} toastClassName="!rounded-[6px] !px-[16px] !py-[12px] !mx-[8px]" />
         </>
     )
 
