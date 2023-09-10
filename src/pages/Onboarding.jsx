@@ -210,7 +210,7 @@ export default function OnboardingPage() {
             <div className="px-[16px] pt-[24px] space-y-[24px] pb-[100px]">
                 {
                     voices.map((voice, index) => {
-                        return (<AudioSection id={voice.id} name={voice.attributes.Name} url={import.meta.env.VITE_API_BASE + voice.attributes.voice.data.attributes.url.slice(1)} key={voice.id} />)
+                        return (<AudioSection id={voice.id} name={voice.attributes.Name} createdAt={voice.attributes.createdAt} url={import.meta.env.VITE_API_BASE + voice.attributes.voice.data.attributes.url.slice(1)} key={voice.id} />)
                     })
                 }
             </div>

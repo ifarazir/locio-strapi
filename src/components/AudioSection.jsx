@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Heart, HeartOutline, Pause, Play } from "react-ionicons";
 import Visualizer from "../utils/Visualizer";
 import { AudioVisualizer } from "react-audio-visualize";
+import { toJalaali } from "jalaali-js";
 
 export default function AudioSection(props) {
     const [playing, setPlay] = useState(false);
@@ -20,7 +21,8 @@ export default function AudioSection(props) {
     const {
         id,
         name,
-        url
+        url,
+        createdAt
     } = props;
 
 
@@ -55,7 +57,7 @@ export default function AudioSection(props) {
                 {/* <Visualizer url={url} currentTime={duration} /> */}
             </div>
             <div className="flex items-center justify-between">
-                <p className="text-xs"><span className="font-bold text-base">{name} | </span>۱۴ دی</p>
+                <p className="text-xs"><span className="font-bold text-base">{name} | </span>{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</p>
                 <button className=" w-[36px] h-[36px] flex items-center justify-center rounded-full"
                     onClick={() => {
                         setPlay(!playing);
