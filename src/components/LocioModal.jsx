@@ -43,7 +43,7 @@ export default function LocioModal({ isOpen, onClose, cafe }) {
                     <div className="z-30 fixed inset-0 flex w-screen items-center justify-center p-4">
                         <Dialog.Panel className={'relative mx-auto w-full max-w-xl bg-white rounded-xl'}>
                             <div className="px-5 py-10 shadow-sm">
-                                <Dialog.Description className={'text-lg'}>
+                                <Dialog.Description className={'text-lg font-bold'}>
                                     {cafe?.modal}
                                 </Dialog.Description>
                             </div>
