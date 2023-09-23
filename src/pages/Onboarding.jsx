@@ -123,14 +123,14 @@ export function NewVoiceDrawer(props) {
                                     as="h3"
                                     className="text-lg font-bold mb-5 leading-6 text-gray-900"
                                 >
-                                    ارسال خاطره
+                                    ثبت صدا
                                 </Dialog.Title>
                                 <div className="mt-2 space-y-3">
                                     <Input title="اسم شما" name="name" placeholder="" />
 
                                     <div>
                                         <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
-                                        <span className="text-xs text-neutral-400 px-3">شما می‌توانید فایل صدایتان را در صورت وارد کردن ایمیل دریافت کنید.</span>
+                                        <span className="text-xs text-neutral-400 px-3">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
                                     </div>
 
                                     <div className="hidden">
@@ -172,7 +172,7 @@ export function NewVoiceDrawer(props) {
                                         className="w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
                                         onClick={handleDiarySubmit}
                                     >
-                                        ثبت خاطره
+                                        ارسال
                                     </button>
                                 </div>
                             </Dialog.Panel>
