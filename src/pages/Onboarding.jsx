@@ -44,35 +44,40 @@ export function NewVoiceDrawer(props) {
     };
 
     async function handleDiarySubmit() {
+        if (!document.querySelector('input[name="name"]').value) {
+            toast.error('لطفا نام خود را وارد کنید');
+            return;
+        }
+
+        if (!recorderControls.recordingBlob) {
+            toast.error('لطفا ابتدا یک صدا ضبط کنید');
+            return;
+        }
+
         const wavBlob = await getWaveBlob(voice, true);
         const response = await APIUpload(wavBlob);
 
         const voiceID = response?.response?.data[0]?.id;
         if (voiceID) {
-            if (!document.querySelector('input[name="name"]').value) {
-                toast.error('لطفا نام خود را وارد کنید');
+            const diaryName = document.querySelector('input[name="name"]').value;
+            const diaryEmail = document.querySelector('input[name="email"]').value;
+            console.log(response?.response?.data[0]?.id);
+
+            const diary = {
+                "data": {
+                    "Name": diaryName,
+                    "Email": diaryEmail,
+                    "voice": voiceID,
+                    "cafe": import.meta.env.VITE_CAFE_ID
+                }
             }
-            else {
-                const diaryName = document.querySelector('input[name="name"]').value;
-                const diaryEmail = document.querySelector('input[name="email"]').value;
-                console.log(response?.response?.data[0]?.id);
 
-                const diary = {
-                    "data": {
-                        "Name": diaryName,
-                        "Email": diaryEmail,
-                        "voice": voiceID,
-                        "cafe": import.meta.env.VITE_CAFE_ID
-                    }
-                }
+            const diaryResponse = await StoreDiary(diary);
 
-                const diaryResponse = await StoreDiary(diary);
-
-                if (diaryResponse?.response?.data?.data?.id) {
-                    toast.success('خاطره شما با موفقیت ثبت شد');
-                    setIsOpen(false);
-                    window.location.reload();
-                }
+            if (diaryResponse?.response?.data?.data?.id) {
+                toast.success('خاطره شما با موفقیت ثبت شد');
+                setIsOpen(false);
+                window.location.reload();
             }
         }
         else {
@@ -97,90 +102,121 @@ export function NewVoiceDrawer(props) {
 
     // Drawer with Framer Motion
     return (
-        <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-30" onClose={closeModal}>
+        <Transition.Root show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-[103]" onClose={closeModal}>
                 <Transition.Child
                     as={Fragment}
-                    enter="ease-out duration-300"
+                    enter="ease-out duration-500"
                     enterFrom="opacity-0"
                     enterTo="opacity-100"
-                    leave="ease-in duration-200"
+                    leave="ease-in duration-500"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-black bg-opacity-25" />
+                    <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
                 </Transition.Child>
 
-                <div className="fixed inset-0 overflow-y-auto">
+                <Transition.Child
+                    className="fixed bottom-0 z-[104] w-screen overflow-y-hidden"
+                    as={Fragment}
+                    enter="ease-out duration-500"
+                    enterFrom="translate-y-full"
+                    enterTo="translate-y-0"
+                    leave="ease-in duration-500"
+                    leaveFrom="translate-y-0"
+                    leaveTo="translate-y-full"
+                >
                     <div className="flex min-h-full items-end justify-center text-center">
-                        <Transition.Child
-                            as={Fragment}
-                            enterFrom="translate-y-full"
-                            leaveTo="opacity-0 translate-y-full"
-                        >
-                            <Dialog.Panel className="w-full max-w-md overflow-hidden rounded-t-2xl bg-white p-6 text-right shadow-xl transition-all translate-y-0 duration-300">
+                        <Dialog.Panel className="relative max-w-md transform overflow-hidden rounded-t-2xl p-6 bg-white w-full transition-all">
+                            <div className="flex items-center justify-between mb-5">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-bold mb-5 leading-6 text-gray-900"
+                                    className="text-lg font-bold leading-6 text-gray-900"
                                 >
                                     ثبت صدا
                                 </Dialog.Title>
-                                <div className="mt-2 space-y-3">
-                                    <Input title="اسم شما" name="name" placeholder="" />
 
-                                    <div>
-                                        <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
-                                        <span className="text-xs text-neutral-400 px-3">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
-                                    </div>
-
-                                    <div className="hidden">
-                                        <AudioRecorder
-                                            onRecordingComplete={(blob) => addAudioElement(blob)}
-                                            recorderControls={recorderControls}
-                                            showVisualizer={true}
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center justify-center rounded-full p-1 border border-transparent bg-gray-100 text-neutral-700 hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                    onClick={closeModal}
+                                >
+                                    <span className="sr-only">بستن</span>
+                                    <svg
+                                        className="h-5 w-5"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
                                         />
-                                    </div>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className="mt-2 space-y-3">
+                                <Input title="نام کاربر *" name="name" placeholder="" required />
 
-                                    <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
+                                <div className="flex flex-col">
+                                    <Input title="آدرس ایمیل" type="email" dir="ltr" name="email" placeholder="" />
+                                    <span className="text-xs text-right text-neutral-400 px-3 mt-1">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
+                                </div>
+
+                                <div className="hidden">
+                                    <AudioRecorder
+                                        onRecordingComplete={(blob) => addAudioElement(blob)}
+                                        recorderControls={recorderControls}
+                                        showVisualizer={true}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
+                                    {
+                                        recorderControls.isRecording ?
+                                            (<p className="text-4xl font-light mb-3">
+                                                {secondsToMinutesAndSeconds(recorderControls.recordingTime)}
+                                            </p>) : (recorderControls.recordingBlob && <div id="player-box" className="mx-auto border-2 rounded-full mb-3"></div>)
+                                    }
+                                    <div className="flex items-center justify-center gap-x-5">
                                         {
                                             recorderControls.isRecording ?
-                                                (<p className="text-4xl font-light mb-3">
-                                                    {secondsToMinutesAndSeconds(recorderControls.recordingTime)}
-                                                </p>) : (recorderControls.recordingBlob && <div id="player-box" className="mx-auto border-2 rounded-full mb-3"></div>)
-                                        }
-                                        <div className="flex items-center justify-center gap-x-5">
-                                            <button onClick={recorderControls.startRecording} className="w-[48px] aspect-square rounded-full bg-red-500 flex items-center justify-center">
-                                                <Mic color="white" height="24px" width="24px" />
-                                            </button>
-                                            <button onClick={recorderControls.stopRecording} className="w-[48px] aspect-square rounded-full bg-neutral-700 flex items-center justify-center">
-                                                <Stop color="white" height="24px" width="24px" />
-                                            </button>
-                                            {
-                                                recorderControls.recordingBlob &&
-                                                <button onClick={handleRemoveVoice} className="w-[48px] aspect-square rounded-full border-2 border-red-500 flex items-center justify-center">
-                                                    <Trash color="red" height="24px" width="24px" />
+                                                <button onClick={recorderControls.stopRecording} className="w-[48px] aspect-square rounded-full bg-neutral-700 flex items-center justify-center">
+                                                    <Stop color="white" height="24px" width="24px" />
+                                                </button> :
+                                                <button onClick={recorderControls.startRecording} className="w-[48px] aspect-square rounded-full bg-red-500 flex items-center justify-center">
+                                                    <Mic color="white" height="24px" width="24px" />
                                                 </button>
-                                            }
-                                        </div>
+                                        }
+                                        {
+                                            recorderControls.recordingBlob &&
+                                            <button onClick={handleRemoveVoice} className="w-[48px] aspect-square rounded-full border-2 border-red-500 flex items-center justify-center">
+                                                <Trash color="red" height="24px" width="24px" />
+                                            </button>
+                                        }
                                     </div>
-
                                 </div>
 
-                                <div className="mt-4">
-                                    <button
-                                        type="button"
-                                        className="w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
-                                        onClick={handleDiarySubmit}
-                                    >
-                                        ارسال
-                                    </button>
-                                </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
+                            </div>
+
+                            <div className="mt-4">
+                                <button
+                                    type="button"
+                                    className="w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
+                                    onClick={handleDiarySubmit}
+                                >
+                                    ارسال
+                                </button>
+                            </div>
+                        </Dialog.Panel>
                     </div>
-                </div>
+                </Transition.Child>
             </Dialog>
-        </Transition>
+        </Transition.Root >
 
     );
 }
