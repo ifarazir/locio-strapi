@@ -47,11 +47,13 @@ export default function AudioSection(props) {
         setPlay(false);
 
         if (url) {
+            // fetch as api for cors problem
             fetch(url)
                 .then((response) => response.blob())
-                .then((tmpBlob) => {
-                    setBlob(tmpBlob)
+                .then((blob) => {
+                    setBlob(blob);
                 })
+                .catch((err) => console.log(err));
         }
     }, [url]);
 

@@ -52,7 +52,7 @@ export function NewVoiceDrawer(props) {
             setIsVoiceSubmitting(false);
             return;
         }
-        
+
         if (!recorderControls.recordingBlob) {
             toast.error('لطفا ابتدا یک صدا ضبط کنید');
             setIsVoiceSubmitting(false);
@@ -217,14 +217,14 @@ export function NewVoiceDrawer(props) {
                                 >
                                     {
                                         isVoiceSubmitting ?
-                                        <svg className="animate-spin mx-auto h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
-                                            </path>
-                                        </svg> : 'ارسال'
+                                            <svg className="animate-spin mx-auto h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                    strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                                                </path>
+                                            </svg> : 'ارسال'
                                     }
                                 </button>
                             </div>
@@ -261,7 +261,7 @@ export default function OnboardingPage() {
 
             <div className="px-[16px] pt-[24px] space-y-[24px] pb-[100px]">
                 {
-                    voices.map((voice, index) => {
+                    voices && voices.map((voice, index) => {
                         return (<AudioSection id={voice?.id} name={voice?.name} createdAt={voice?.created_at} url={voice?.file_url.replace('http://', 'https://')} key={voice?.id} />)
                     })
                 }
