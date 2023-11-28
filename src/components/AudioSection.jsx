@@ -5,15 +5,32 @@ import { Heart, HeartOutline, Pause, Play } from "react-ionicons";
 import Visualizer from "../utils/Visualizer";
 import { AudioVisualizer } from "react-audio-visualize";
 import { toJalaali } from "jalaali-js";
+import { LikeDiary } from "../api/diary";
+import { toast } from "react-toastify";
 
 export default function AudioSection(props) {
     const [playing, setPlay] = useState(false);
+    const [isLiked, setLike] = useState(false);
+    const [isLikeUploading, setLikeUploading] = useState(false);
     const [duration, setDuration] = useState(0);
     const [blob, setBlob] = useState(null)
     const visualizerRef = useRef(null)
 
     const timeUpdate = (event) => {
         setDuration(event.target.currentTime);
+    }
+
+    async function SubmitLikeDiary() {
+        setLikeUploading(true);
+        const response = await LikeDiary(props.id);
+
+        if (response.response.status === 'success') {
+            setLikeUploading(false);
+            setLike(!isLiked);
+        }
+        else {
+            toast.error(response?.response?.message);
+        }
     }
 
     const audioRef = useRef();
@@ -70,8 +87,19 @@ export default function AudioSection(props) {
                     }
                 </button>
 
-                <button>
-                    <Heart color={'#ef4444'} width={'36px'} />
+                <button onClick={SubmitLikeDiary}>
+                    {
+                        isLikeUploading ?
+                            <div className="animate-pulse">
+                                <HeartOutline color={'#404040'} width={'36px'} />
+                            </div>
+                            :
+                            // if isLiked is true, show Heart, else show HeartOutline
+                            isLiked ?
+                                <Heart color={'#ef4444'} width={'36px'} />
+                                :
+                                <HeartOutline color={'#404040'} width={'36px'} onClick={SubmitLikeDiary} />
+                    }
                 </button>
             </div>
 

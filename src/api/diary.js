@@ -62,3 +62,21 @@ export const StoreDiary = async (diary) => {
         }
     })
 };
+
+export const LikeDiary = async (diary) => {
+    return youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
+        return {
+            status: 'success',
+            variant: 'default',
+            message: 'success',
+            response: response.data
+        }
+    }).catch((response) => {
+        return {
+            status: 'error',
+            variant: 'error',
+            message: 'Error! Please try again later.',
+            response: response
+        }
+    })
+};

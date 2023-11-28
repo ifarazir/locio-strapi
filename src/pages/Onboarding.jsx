@@ -262,7 +262,7 @@ export default function OnboardingPage() {
             <div className="px-[16px] pt-[24px] space-y-[24px] pb-[100px]">
                 {
                     voices.map((voice, index) => {
-                        return (<AudioSection id={voice?.id} name={voice?.name} createdAt={voice?.created_at} url={voice?.file_url} key={voice?.id} />)
+                        return (<AudioSection id={voice?.id} name={voice?.name} createdAt={voice?.created_at} url={voice?.file_url.replace('http://', 'https://')} key={voice?.id} />)
                     })
                 }
             </div>
