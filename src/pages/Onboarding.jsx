@@ -32,6 +32,7 @@ export function NewVoiceDrawer(props) {
     const { isOpen, setIsOpen } = props;
 
     const [voice, setVoice] = useState(null);
+    const [isVoiceSubmitting, setIsVoiceSubmitting] = useState(false);
 
     const recorderControls = useAudioRecorder()
     const addAudioElement = (blob) => {
@@ -44,37 +45,43 @@ export function NewVoiceDrawer(props) {
     };
 
     async function handleDiarySubmit() {
+        setIsVoiceSubmitting(true);
+
         if (!document.querySelector('input[name="name"]').value) {
             toast.error('لطفا نام خود را وارد کنید');
+            setIsVoiceSubmitting(false);
             return;
         }
-
+        
         if (!recorderControls.recordingBlob) {
             toast.error('لطفا ابتدا یک صدا ضبط کنید');
+            setIsVoiceSubmitting(false);
             return;
         }
 
         const wavBlob = await getWaveBlob(voice, true);
         const response = await APIUpload(wavBlob);
 
-        const voiceID = response?.response?.data[0]?.id;
+
+        const voiceID = response?.response?.file?.id;
         if (voiceID) {
             const diaryName = document.querySelector('input[name="name"]').value;
             const diaryEmail = document.querySelector('input[name="email"]').value;
-            console.log(response?.response?.data[0]?.id);
 
             const diary = {
-                "data": {
-                    "Name": diaryName,
-                    "Email": diaryEmail,
-                    "voice": voiceID,
-                    "cafe": import.meta.env.VITE_CAFE_ID
-                }
+                file_id: voiceID,
+                cafe_id: import.meta.env.VITE_CAFE_ID,
+                name: diaryName,
+                email: diaryEmail
             }
 
             const diaryResponse = await StoreDiary(diary);
 
-            if (diaryResponse?.response?.data?.data?.id) {
+            console.log(diaryResponse.response.status);
+
+            if (diaryResponse.response.status == 'success') {
+                setIsVoiceSubmitting(false);
+
                 toast.success('خاطره شما با موفقیت ثبت شد');
                 setIsOpen(false);
                 window.location.reload();
@@ -83,8 +90,6 @@ export function NewVoiceDrawer(props) {
         else {
             toast.error('لطفا ابتدا یک صدا ضبط کنید');
         }
-
-
 
     }
 
@@ -206,10 +211,21 @@ export function NewVoiceDrawer(props) {
                             <div className="mt-4">
                                 <button
                                     type="button"
-                                    className="w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
+                                    disabled={isVoiceSubmitting}
+                                    className="w-full justify-center items-center text-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
                                     onClick={handleDiarySubmit}
                                 >
-                                    ارسال
+                                    {
+                                        isVoiceSubmitting ?
+                                        <svg className="animate-spin mx-auto h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                                            </path>
+                                        </svg> : 'ارسال'
+                                    }
                                 </button>
                             </div>
                         </Dialog.Panel>
@@ -228,7 +244,7 @@ export default function OnboardingPage() {
 
     async function getVoices() {
         const response = await GetDiaries(import.meta.env.VITE_CAFE_ID);
-        setVoices(response.response.data.data);
+        setVoices(response.response.diaries);
     }
 
     useEffect(() => {
@@ -246,7 +262,7 @@ export default function OnboardingPage() {
             <div className="px-[16px] pt-[24px] space-y-[24px] pb-[100px]">
                 {
                     voices.map((voice, index) => {
-                        return (<AudioSection id={voice.id} name={voice.attributes.Name} createdAt={voice.attributes.createdAt} url={import.meta.env.VITE_API_BASE + voice.attributes.voice.data.attributes.url.slice(1)} key={voice.id} />)
+                        return (<AudioSection id={voice?.id} name={voice?.name} createdAt={voice?.created_at} url={voice?.file_url} key={voice?.id} />)
                     })
                 }
             </div>

@@ -17,13 +17,13 @@ const youzAxios = axios.create({
 });
 
 export const GetDiaries = async (cafeID) => {
-    return youzAxios.get('/api/diaries?populate[voice][fields][1]=url&populate[cafe][fields][1]=cafe&filters[cafe][id][$eq]=' + cafeID).then((response) => {
+    return youzAxios.get('/api/diaries/' + cafeID).then((response) => {
         if (response.data.status == 'success') {
             return {
                 status: 'success',
                 variant: 'default',
                 message: 'success',
-                response: response
+                response: response.data
             }
         }
         else {
@@ -38,7 +38,7 @@ export const GetDiaries = async (cafeID) => {
         return {
             status: 'error',
             variant: 'error',
-            message: response.data.message,
+            message: response,
             response: response
         }
     })
@@ -51,7 +51,7 @@ export const StoreDiary = async (diary) => {
             status: 'success',
             variant: 'default',
             message: 'success',
-            response: response
+            response: response.data
         }
     }).catch((response) => {
         return {

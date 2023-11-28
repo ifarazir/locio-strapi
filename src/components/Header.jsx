@@ -28,7 +28,7 @@ export default function Header() {
         else {
             setIsLocioModalOpen(true);
         }
-        getCafeData();
+        // getCafeData();
     }, []);
 
     return (

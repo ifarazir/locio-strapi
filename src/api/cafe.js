@@ -17,7 +17,7 @@ const youzAxios = axios.create({
 });
 
 export const GetCafe = async (cafeID) => {
-    return youzAxios.get('/api/cafes/' + cafeID).then((response) => {
+    return youzAxios.get('/api/diaries/' + cafeID).then((response) => {
         return {
             status: 'success',
             variant: 'default',
