@@ -29,11 +29,11 @@ export const APIUpload = async (voiceFile) => {
         type: voiceFile.type,
     });
 
-    return await youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
-        youzAxios.post('/api/files/upload', {
+    return await youzAxios.get('/sanctum/csrf-cookie').then(async CSRFresponse => {
+        await youzAxios.post('/api/files/upload', {
             file: file
         }).then((response) => {
-            console.log(response);
+            console.log(response.data);
             return response.data.file.id
         }).catch((response) => {
             return {
