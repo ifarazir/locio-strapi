@@ -17,7 +17,7 @@ const youzAxios = axios.create({
     }
 });
 
-export const GetGetCafeCafe = async (cafeID) => {
+export const GetCafe = async (cafeID) => {
     return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
         youzAxios.get('/api/diaries/' + cafeID).then((response) => {
             return {
