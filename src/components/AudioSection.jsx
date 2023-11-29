@@ -24,7 +24,7 @@ export default function AudioSection(props) {
         setLikeUploading(true);
         const response = await LikeDiary(props.id);
 
-        if (response.response.status === 'success') {
+        if (response?.response?.status === 'success') {
             setLikeUploading(false);
             setLike(!isLiked);
         }
