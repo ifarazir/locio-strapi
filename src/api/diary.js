@@ -18,31 +18,33 @@ const youzAxios = axios.create({
 });
 
 export const GetDiaries = async (cafeID) => {
-    return youzAxios.get('/api/diaries/' + cafeID).then((response) => {
-        if (response.data.status == 'success') {
-            return {
-                status: 'success',
-                variant: 'default',
-                message: 'success',
-                response: response.data
+    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
+        youzAxios.get('/api/diaries/' + cafeID).then((response) => {
+            if (response.data.status == 'success') {
+                return {
+                    status: 'success',
+                    variant: 'default',
+                    message: 'success',
+                    response: response.data
+                }
             }
-        }
-        else {
+            else {
+                return {
+                    status: 'error',
+                    variant: 'error',
+                    message: response?.data?.message,
+                    response: response
+                }
+            }
+        }).catch((response) => {
             return {
                 status: 'error',
                 variant: 'error',
-                message: response?.data?.message,
+                message: response,
                 response: response
             }
-        }
-    }).catch((response) => {
-        return {
-            status: 'error',
-            variant: 'error',
-            message: response,
-            response: response
-        }
-    })
+        })
+    });
 };
 
 
@@ -65,19 +67,21 @@ export const StoreDiary = async (diary) => {
 };
 
 export const LikeDiary = async (diary) => {
-    return youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
-        return {
-            status: 'success',
-            variant: 'default',
-            message: 'success',
-            response: response.data
-        }
-    }).catch((response) => {
-        return {
-            status: 'error',
-            variant: 'error',
-            message: 'Error! Please try again later.',
-            response: response
-        }
-    })
+    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
+        youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
+            return {
+                status: 'success',
+                variant: 'default',
+                message: 'success',
+                response: response.data
+            }
+        }).catch((response) => {
+            return {
+                status: 'error',
+                variant: 'error',
+                message: 'Error! Please try again later.',
+                response: response
+            }
+        })
+    });
 };

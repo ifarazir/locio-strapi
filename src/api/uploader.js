@@ -27,22 +27,24 @@ export const APIUpload = async (voiceFile) => {
     const file = new File([voiceFile], fileName, {
         type: voiceFile.type,
     });
-    
-    return youzAxios.post('/api/files/upload', {
-        file: file
-    }).then((response) => {
-        return {
-            status: 'success',
-            variant: 'default',
-            message: 'success',
-            response: response.data
-        }
-    }).catch((response) => {
-        return {
-            status: 'error',
-            variant: 'error',
-            message: response.data.message,
-            response: response
-        }
-    })
+
+    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
+        youzAxios.post('/api/files/upload', {
+            file: file
+        }).then((response) => {
+            return {
+                status: 'success',
+                variant: 'default',
+                message: 'success',
+                response: response.data
+            }
+        }).catch((response) => {
+            return {
+                status: 'error',
+                variant: 'error',
+                message: response.data.message,
+                response: response
+            }
+        })
+    });
 };

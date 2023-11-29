@@ -17,19 +17,21 @@ const youzAxios = axios.create({
     }
 });
 
-export const GetCafe = async (cafeID) => {
-    return youzAxios.get('/api/diaries/' + cafeID).then((response) => {
-        return {
-            status: 'success',
-            variant: 'default',
-            response: response.data.data.attributes
-        }
-    }).catch((response) => {
-        return {
-            status: 'error',
-            variant: 'error',
-            message: response.data.message,
-            response: response
-        }
-    })
+export const GetGetCafeCafe = async (cafeID) => {
+    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
+        youzAxios.get('/api/diaries/' + cafeID).then((response) => {
+            return {
+                status: 'success',
+                variant: 'default',
+                response: response.data.data.attributes
+            }
+        }).catch((response) => {
+            return {
+                status: 'error',
+                variant: 'error',
+                message: response.data.message,
+                response: response
+            }
+        })
+    });
 };
