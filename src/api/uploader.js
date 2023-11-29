@@ -9,7 +9,9 @@ axios.interceptors.response.use(response => {
     return error;
 });
 
+axios.defaults.withCredentials = true;
 const youzAxios = axios.create({
+    withCredentials: true,
     baseURL: import.meta.env.VITE_API_BASE,
     headers: {
         'Accept': 'application/json',
