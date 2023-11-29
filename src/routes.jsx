@@ -5,7 +5,7 @@ import OnboardingPage from "./pages/Onboarding";
 
 export const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/nolan",
         element: <OnboardingPage />,
         // errorElement: <ErrorPage />
     }
