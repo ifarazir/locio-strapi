@@ -60,10 +60,9 @@ export function NewVoiceDrawer(props) {
         }
 
         const wavBlob = await getWaveBlob(voice, true);
-        const response = await APIUpload(wavBlob);
+        const voiceID = await APIUpload(wavBlob);
 
-
-        const voiceID = await response.response.file.id;
+        console.log(voiceID);
         if (voiceID) {
             const diaryName = document.querySelector('input[name="name"]').value;
             const diaryEmail = document.querySelector('input[name="email"]').value;

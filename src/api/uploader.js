@@ -33,12 +33,7 @@ export const APIUpload = async (voiceFile) => {
         youzAxios.post('/api/files/upload', {
             file: file
         }).then((response) => {
-            return {
-                status: 'success',
-                variant: 'default',
-                message: 'success',
-                response: response.data
-            }
+            return response.data.file.id
         }).catch((response) => {
             return {
                 status: 'error',
