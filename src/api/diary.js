@@ -19,33 +19,31 @@ const youzAxios = axios.create({
 });
 
 export const GetDiaries = async (cafeID) => {
-    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
-        youzAxios.get('/api/diaries/' + cafeID).then((response) => {
-            if (response.data.status == 'success') {
-                return {
-                    status: 'success',
-                    variant: 'default',
-                    message: 'success',
-                    response: response.data
-                }
+    return youzAxios.get('/api/diaries/' + cafeID).then((response) => {
+        if (response.data.status == 'success') {
+            return {
+                status: 'success',
+                variant: 'default',
+                message: 'success',
+                response: response.data
             }
-            else {
-                return {
-                    status: 'error',
-                    variant: 'error',
-                    message: response?.data?.message,
-                    response: response
-                }
-            }
-        }).catch((response) => {
+        }
+        else {
             return {
                 status: 'error',
                 variant: 'error',
-                message: response,
+                message: response?.data?.message,
                 response: response
             }
-        })
-    });
+        }
+    }).catch((response) => {
+        return {
+            status: 'error',
+            variant: 'error',
+            message: response,
+            response: response
+        }
+    })
 };
 
 
