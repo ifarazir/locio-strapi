@@ -15,7 +15,6 @@ const youzAxios = axios.create({
     baseURL: import.meta.env.VITE_API_BASE,
     headers: {
         'Accept': 'application/json',
-        'Sec-Fetch-Site': 'same-origin',
         'Content-Type': 'multipart/form-data'
     }
 });
