@@ -33,6 +33,7 @@ export const APIUpload = async (voiceFile) => {
         await youzAxios.post('/api/files/upload', {
             file: file
         }).then(async (response) => {
+            console.log('apiID: ', response.data.file.id);
             return await response.data.file.id
         }).catch((response) => {
             return {
