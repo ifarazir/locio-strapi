@@ -54,7 +54,7 @@ export function NewVoiceDrawer(props) {
         }
 
         if (!recorderControls.recordingBlob) {
-            toast.error('لطفا ابتدا یک صدا ضبط کنید');
+            toast.error('.لطفا ابتدا یک صدا ضبط کنید');
             setIsVoiceSubmitting(false);
             return;
         }
@@ -63,7 +63,7 @@ export function NewVoiceDrawer(props) {
         const response = await APIUpload(wavBlob);
 
 
-        const voiceID = response?.response?.file?.id;
+        const voiceID = await response.response.file.id;
         if (voiceID) {
             const diaryName = document.querySelector('input[name="name"]').value;
             const diaryEmail = document.querySelector('input[name="email"]').value;
@@ -88,7 +88,7 @@ export function NewVoiceDrawer(props) {
             }
         }
         else {
-            toast.error('لطفا ابتدا یک صدا ضبط کنید');
+            toast.error('لطفا ابتدا یک صدا ضبط کنید..');
         }
 
     }
