@@ -60,35 +60,35 @@ export function NewVoiceDrawer(props) {
         }
 
         const wavBlob = await getWaveBlob(voice, true);
-        const voiceID = await APIUpload(wavBlob);
-
-        console.log(voiceID);
-        if (voiceID) {
-            const diaryName = document.querySelector('input[name="name"]').value;
-            const diaryEmail = document.querySelector('input[name="email"]').value;
-
-            const diary = {
-                file_id: voiceID,
-                cafe_id: import.meta.env.VITE_CAFE_ID,
-                name: diaryName,
-                email: diaryEmail
+        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
+            if (voiceID) {
+                const diaryName = document.querySelector('input[name="name"]').value;
+                const diaryEmail = document.querySelector('input[name="email"]').value;
+    
+                const diary = {
+                    file_id: voiceID,
+                    cafe_id: import.meta.env.VITE_CAFE_ID,
+                    name: diaryName,
+                    email: diaryEmail
+                }
+    
+                const diaryResponse = await StoreDiary(diary);
+    
+                console.log(diaryResponse.response.status);
+    
+                if (diaryResponse.response.status == 'success') {
+                    setIsVoiceSubmitting(false);
+    
+                    toast.success('خاطره شما با موفقیت ثبت شد');
+                    setIsOpen(false);
+                    window.location.reload();
+                }
             }
-
-            const diaryResponse = await StoreDiary(diary);
-
-            console.log(diaryResponse.response.status);
-
-            if (diaryResponse.response.status == 'success') {
-                setIsVoiceSubmitting(false);
-
-                toast.success('خاطره شما با موفقیت ثبت شد');
-                setIsOpen(false);
-                window.location.reload();
+            else {
+                toast.error('لطفا ابتدا یک صدا ضبط کنید..');
             }
-        }
-        else {
-            toast.error('لطفا ابتدا یک صدا ضبط کنید..');
-        }
+        })
+
 
     }
 
