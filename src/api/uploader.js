@@ -32,9 +32,8 @@ export const APIUpload = async (voiceFile) => {
     return await youzAxios.get('/sanctum/csrf-cookie').then(async CSRFresponse => {
         await youzAxios.post('/api/files/upload', {
             file: file
-        }).then((response) => {
-            console.log(response.data);
-            return response.data.file.id
+        }).then(async (response) => {
+            return await response.data.file.id
         }).catch((response) => {
             return {
                 status: 'error',
