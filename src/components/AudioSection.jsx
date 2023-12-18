@@ -86,7 +86,7 @@ export default function AudioSection(props) {
                 {/* <Visualizer url={url} currentTime={duration} /> */}
             </div>
             <div className="flex items-center justify-between">
-                <p className="text-xs"><span className="font-bold text-base">{name} | </span>{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</p>
+                <p className="text-xs flex items-center"><span className="font-bold text-base">{name} | </span> <span>{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</span></p>
                 <button className=" w-[36px] h-[36px] flex items-center justify-center rounded-full"
                     onClick={() => {
                         setPlay(!playing);
