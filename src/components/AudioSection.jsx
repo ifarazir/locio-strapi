@@ -9,7 +9,16 @@ import { LikeDiary } from "../api/diary";
 import { toast } from "react-toastify";
 
 export default function AudioSection(props) {
+    const {
+        id,
+        name,
+        url,
+        createdAt,
+        likes_count
+    } = props;
+
     const [playing, setPlay] = useState(false);
+    const [likesCount, setLikesCount] = useState(likes_count);
     const [isLiked, setLike] = useState(false);
     const [isLikeUploading, setLikeUploading] = useState(false);
     const [duration, setDuration] = useState(0);
@@ -23,10 +32,11 @@ export default function AudioSection(props) {
     async function SubmitLikeDiary() {
         setLikeUploading(true);
         const response = await LikeDiary(props.id);
-
+        console.log(response);
         if (response?.response?.status === 'success') {
             setLikeUploading(false);
             setLike(!isLiked);
+            setLikesCount(likesCount + 1);
         }
         else {
             toast.error(response?.response?.message);
@@ -34,13 +44,6 @@ export default function AudioSection(props) {
     }
 
     const audioRef = useRef();
-
-    const {
-        id,
-        name,
-        url,
-        createdAt
-    } = props;
 
 
     useEffect(() => {
@@ -102,6 +105,7 @@ export default function AudioSection(props) {
                                 :
                                 <HeartOutline color={'#404040'} width={'36px'} onClick={SubmitLikeDiary} />
                     }
+                    { }
                 </button>
             </div>
 
