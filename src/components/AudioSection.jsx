@@ -39,7 +39,11 @@ export default function AudioSection(props) {
             console.log('Updated!');
             setLikeUploading(false);
             setLike(!isLiked);
-            setLikesCount(likesCount + 1);
+            if(isLiked) {
+                setLikesCount(likesCount - 1);
+            } else {
+                setLikesCount(likesCount + 1);
+            }
         }
         else {
             toast.error(response?.response?.message);
@@ -96,6 +100,7 @@ export default function AudioSection(props) {
                 </button>
 
                 <button className="flex items-center gap-[6px]" onClick={SubmitLikeDiary}>
+                    <span className="text-neutral-900 text-xs">{likesCount}</span>
                     {
                         isLikeUploading ?
                             <div className="animate-spin">
@@ -108,7 +113,6 @@ export default function AudioSection(props) {
                                 :
                                 <HeartOutline color={'#404040'} width={'36px'} />
                     }
-                    <span className="text-neutral-900 text-xs">{likesCount}</span>
                 </button>
             </div>
 
