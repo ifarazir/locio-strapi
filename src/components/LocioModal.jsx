@@ -43,14 +43,14 @@ export default function LocioModal({ isOpen, onClose, cafe }) {
                     <div className="z-30 fixed inset-0 flex w-screen items-center justify-center p-4">
                         <Dialog.Panel className={'relative mx-auto w-full max-w-xl bg-white rounded-xl'}>
                             <div className="px-5 py-10 shadow-sm">
-                                <Dialog.Description className={'text-lg font-bold'}>
+                                <Dialog.Description className={'text-lg font-semibold'}>
                                     مکان و صدا دو جز یادآوری خاطرات و داستان‌های ماست. این داستان‌ها بدون حضور اتفاق و یا هم‌دستی دوستان ما بوجود نمی‌آیند و پیوند این داستان‌ها به مکانی مشخص عنصری است برای یادآوری آن‌ها و تجربه‌ی مجدد لحظه.
                                     شما می‌توانید با اسکن این کد داستان‌ها و گفت‌ و گوهای خود در کافه نولان را بگویید و یا داستان دیگران را بشنوید.
-                                    
-                                    <span className="mt-3">
-                                        با کلیک بر روی دکمه قرمز رنگ میکروفن در قسمت پایین صفحه، می‌توانید خاطره خود را از این مکان ثبت کنید.
-                                    </span>
+
                                 </Dialog.Description>
+                                <p className="mt-3 text-lg font-bold">
+                                    با کلیک بر روی دکمه قرمز رنگ میکروفن در قسمت پایین صفحه، می‌توانید خاطره خود را از این مکان ثبت کنید.
+                                </p>
                             </div>
 
                             <button
