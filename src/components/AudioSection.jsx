@@ -33,20 +33,20 @@ export default function AudioSection(props) {
 
     async function SubmitLikeDiary() {
         setLikeUploading(true);
-        const response = await LikeDiary(props.id);
+        if (!isLiked) {
+            const response = await LikeDiary(props.id);
 
-        if (response?.response?.data?.status === 'success') {
-            console.log('Updated!');
-            setLikeUploading(false);
-            setLike(!isLiked);
-            if(isLiked) {
-                setLikesCount(likesCount - 1);
-            } else {
+            if (response?.response?.data?.status === 'success') {
+                setLikeUploading(false);
+                setLike(!isLiked);
                 setLikesCount(likesCount + 1);
             }
-        }
-        else {
-            toast.error(response?.response?.message);
+            else {
+                toast.error(response?.response?.message);
+            }
+        }else {
+            setLikeUploading(false);
+            setLikesCount(likesCount - 1);
         }
     }
 
