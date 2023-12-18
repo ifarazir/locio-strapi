@@ -72,7 +72,7 @@ export const LikeDiary = async (diary) => {
                 status: 'success',
                 variant: 'default',
                 message: 'success',
-                response: response.data
+                response: response
             }
         }).catch((response) => {
             return {
