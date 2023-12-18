@@ -67,7 +67,6 @@ export const StoreDiary = async (diary) => {
 
 export const LikeDiary = async (diary) => {
     return youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
-        console.log('API Response:', response);
         return {
             status: 'success',
             variant: 'default',

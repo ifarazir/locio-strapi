@@ -7,6 +7,7 @@ import { AudioVisualizer } from "react-audio-visualize";
 import { toJalaali } from "jalaali-js";
 import { LikeDiary } from "../api/diary";
 import { toast } from "react-toastify";
+import { CgSpinner } from "react-icons/cg";
 
 export default function AudioSection(props) {
     const {
@@ -32,9 +33,9 @@ export default function AudioSection(props) {
     async function SubmitLikeDiary() {
         setLikeUploading(true);
         const response = await LikeDiary(props.id);
-        console.log('Function Response:', response);
 
-        if (response?.response?.status === 'success') {
+        if (response?.response?.data?.status === 'success') {
+            console.log('Updated!');
             setLikeUploading(false);
             setLike(!isLiked);
             setLikesCount(likesCount + 1);
@@ -97,7 +98,7 @@ export default function AudioSection(props) {
                     {
                         isLikeUploading ?
                             <div className="animate-pulse">
-                                <HeartOutline color={'#404040'} width={'36px'} />
+                                <CgSpinner className="text-[36px] text-[#ef4444]" />
                             </div>
                             :
                             // if isLiked is true, show Heart, else show HeartOutline
