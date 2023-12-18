@@ -94,6 +94,8 @@ export function NewVoiceDrawer(props) {
     }
 
     function closeModal() {
+        recorderControls.stopRecording();
+        handleRemoveVoice();
         setIsOpen(false)
     }
 
