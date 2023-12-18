@@ -32,7 +32,8 @@ export default function AudioSection(props) {
     async function SubmitLikeDiary() {
         setLikeUploading(true);
         const response = await LikeDiary(props.id);
-        console.log(response);
+        console.log('Function Response:', response);
+
         if (response?.response?.status === 'success') {
             setLikeUploading(false);
             setLike(!isLiked);
@@ -103,7 +104,7 @@ export default function AudioSection(props) {
                             isLiked ?
                                 <Heart color={'#ef4444'} width={'36px'} />
                                 :
-                                <HeartOutline color={'#404040'} width={'36px'} onClick={SubmitLikeDiary} />
+                                <HeartOutline color={'#404040'} width={'36px'} />
                     }
                     { }
                 </button>

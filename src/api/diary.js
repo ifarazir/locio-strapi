@@ -66,21 +66,20 @@ export const StoreDiary = async (diary) => {
 };
 
 export const LikeDiary = async (diary) => {
-    return youzAxios.get('/sanctum/csrf-cookie').then(CSRFresponse => {
-        youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
-            return {
-                status: 'success',
-                variant: 'default',
-                message: 'success',
-                response: response
-            }
-        }).catch((response) => {
-            return {
-                status: 'error',
-                variant: 'error',
-                message: 'Error! Please try again later.',
-                response: response
-            }
-        })
+    return youzAxios.get('/api/like/diary/' + diary, {}).then((response) => {
+        console.log('API Response:', response);
+        return {
+            status: 'success',
+            variant: 'default',
+            message: 'success',
+            response: response
+        }
+    }).catch((response) => {
+        return {
+            status: 'error',
+            variant: 'error',
+            message: 'Error! Please try again later.',
+            response: response
+        }
     });
 };
