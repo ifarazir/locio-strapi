@@ -15,12 +15,13 @@ export default function AudioSection(props) {
         name,
         url,
         createdAt,
-        likes_count
+        likes_count,
+        is_liked = false
     } = props;
 
     const [playing, setPlay] = useState(false);
     const [likesCount, setLikesCount] = useState(likes_count);
-    const [isLiked, setLike] = useState(false);
+    const [isLiked, setLike] = useState(is_liked);
     const [isLikeUploading, setLikeUploading] = useState(false);
     const [duration, setDuration] = useState(0);
     const [blob, setBlob] = useState(null)
@@ -94,11 +95,11 @@ export default function AudioSection(props) {
                     }
                 </button>
 
-                <button onClick={SubmitLikeDiary}>
+                <button className="flex items-center gap-[6px]" onClick={SubmitLikeDiary}>
                     {
                         isLikeUploading ?
-                            <div className="animate-pulse">
-                                <CgSpinner className="text-[36px] text-[#ef4444]" />
+                            <div className="animate-spin">
+                                <CgSpinner className="text-[30px] text-[#ef4444]" />
                             </div>
                             :
                             // if isLiked is true, show Heart, else show HeartOutline
@@ -107,7 +108,7 @@ export default function AudioSection(props) {
                                 :
                                 <HeartOutline color={'#404040'} width={'36px'} />
                     }
-                    { }
+                    <span className="text-neutral-900 text-xs">{likesCount}</span>
                 </button>
             </div>
 
