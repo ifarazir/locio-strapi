@@ -105,7 +105,7 @@ export function NewVoiceDrawer(props) {
 
     function handleRemoveVoice() {
         if (document.querySelector('#player-box')) {
-            document.querySelector('#player-box')?.innerHTML = '';
+            document.querySelector('#player-box').innerHTML = '';
         }
     }
 
