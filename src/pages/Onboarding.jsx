@@ -192,7 +192,7 @@ export function NewVoiceDrawer(props) {
                                     <span className="text-xs text-right text-neutral-400 px-3 mt-1">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
                                 </div>
 
-                                <Dashboard uppy={uppy} plugins={['Audio']} />
+                                <Dashboard uppy={uppy} plugins={['Audio']} height={200} />
 
                                 {/* <div className="hidden">
                                     <AudioRecorder
