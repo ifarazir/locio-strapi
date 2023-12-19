@@ -12,6 +12,15 @@ import { getWaveBlob } from "webm-to-wav-converter";
 import { APIUpload } from "../api/uploader";
 import { toast } from "react-toastify";
 
+
+import { Dashboard } from "@uppy/react";
+import Audio from "@uppy/audio";
+import Uppy from "@uppy/core";
+import '@uppy/core/dist/style.min.css';
+import '@uppy/dashboard/dist/style.min.css';
+import '@uppy/audio/dist/style.min.css';
+import Tus from "@uppy/tus";
+
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
 function convertToPersianNumber(input) {
@@ -109,6 +118,9 @@ export function NewVoiceDrawer(props) {
         }
     }
 
+    const uppy = new Uppy().use(Audio).use(Tus, { endpoint: 'https://locio.karensadev.com/api/files/upload' })
+
+
     // Drawer with Framer Motion
     return (
         <Transition.Root show={isOpen} as={Fragment}>
@@ -176,15 +188,17 @@ export function NewVoiceDrawer(props) {
                                     <span className="text-xs text-right text-neutral-400 px-3 mt-1">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
                                 </div>
 
-                                <div className="hidden">
+                                <Dashboard uppy={uppy} plugins={['Audio']} />
+
+                                {/* <div className="hidden">
                                     <AudioRecorder
                                         onRecordingComplete={(blob) => addAudioElement(blob)}
                                         recorderControls={recorderControls}
                                         showVisualizer={true}
                                     />
-                                </div>
+                                </div> */}
 
-                                <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
+                                {/* <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
                                     {
                                         recorderControls.isRecording ?
                                             (<p className="text-4xl font-light mb-3">
@@ -208,7 +222,7 @@ export function NewVoiceDrawer(props) {
                                             </button>
                                         }
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div>
 
