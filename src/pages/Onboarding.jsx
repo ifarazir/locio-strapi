@@ -19,7 +19,6 @@ import Uppy from "@uppy/core";
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import '@uppy/audio/dist/style.min.css';
-import XHRUpload from "@uppy/xhr-upload";
 
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
@@ -53,7 +52,7 @@ export function NewVoiceDrawer(props) {
         setVoice(blob);
     };
 
-    async function handleDiarySubmit() {
+    async function handleDiarySubmit(voiceFile) {
         setIsVoiceSubmitting(true);
 
         if (!document.querySelector('input[name="name"]').value) {
@@ -62,14 +61,13 @@ export function NewVoiceDrawer(props) {
             return;
         }
 
-        if (!recorderControls.recordingBlob) {
-            toast.error('.لطفا ابتدا یک صدا ضبط کنید');
-            setIsVoiceSubmitting(false);
-            return;
-        }
+        // if (!recorderControls.recordingBlob) {
+        //     toast.error('.لطفا ابتدا یک صدا ضبط کنید');
+        //     setIsVoiceSubmitting(false);
+        //     return;
+        // }
 
-        const wavBlob = await getWaveBlob(voice, true);
-        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
+        const fileuploadresponse = await APIUpload(voiceFile).then(async (voiceID) => {
             console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
@@ -118,10 +116,14 @@ export function NewVoiceDrawer(props) {
         }
     }
 
-    const uppy = new Uppy().use(Audio).use(XHRUpload, {
-        endpoint: 'https://locio.karensadev.com/api/files/upload',
-        method: 'post',
-    })
+    const uppy = new Uppy().use(Audio);
+
+    uppy.on('file-added', (file) => {
+        handleDiarySubmit(file.data);
+
+        console.log('Added file', file);
+    });
+
 
     // Drawer with Framer Motion
     return (
@@ -233,7 +235,6 @@ export function NewVoiceDrawer(props) {
                                     type="button"
                                     disabled={isVoiceSubmitting}
                                     className="w-full justify-center items-center text-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
-                                    onClick={handleDiarySubmit}
                                 >
                                     {
                                         isVoiceSubmitting ?
