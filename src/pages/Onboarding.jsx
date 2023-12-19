@@ -61,25 +61,25 @@ export function NewVoiceDrawer(props) {
 
         const wavBlob = await getWaveBlob(voice, true);
         const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
-            console.log('voiceId:'+ voiceID);
+            console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
                 const diaryEmail = document.querySelector('input[name="email"]').value;
-    
+
                 const diary = {
                     file_id: voiceID,
                     cafe_id: import.meta.env.VITE_CAFE_ID,
                     name: diaryName,
                     email: diaryEmail
                 }
-    
+
                 const diaryResponse = await StoreDiary(diary);
-    
+
                 console.log(diaryResponse.response.status);
-    
+
                 if (diaryResponse.response.status == 'success') {
                     setIsVoiceSubmitting(false);
-    
+
                     toast.success('خاطره شما با موفقیت ثبت شد');
                     setIsOpen(false);
                     window.location.reload();
@@ -104,7 +104,9 @@ export function NewVoiceDrawer(props) {
     }
 
     function handleRemoveVoice() {
-        document.querySelector('#player-box').innerHTML = '';
+        if (document.querySelector('#player-box')) {
+            document.querySelector('#player-box')?.innerHTML = '';
+        }
     }
 
     // Drawer with Framer Motion
