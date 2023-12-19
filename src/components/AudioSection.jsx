@@ -42,6 +42,7 @@ export default function AudioSection(props) {
                 setLikesCount(likesCount + 1);
             }
             else {
+                console.log(response);
                 toast.error(response?.response?.message);
             }
         }else {
@@ -70,7 +71,7 @@ export default function AudioSection(props) {
 
     return (
         <section index={id} className={"mx-auto bg-white md:rounded-[12px] max-w-4xl px-[16px] py-[20px] shadow-lg rounded-xl transition-all " + (playing ? 'scale-105 -translate-y-[5px]' : '')}>
-            <div className="flex flex-col justify-center items-center mb-3">
+            <div className="flex flex-col justify-center overflow-hidden items-center mb-3">
                 <audio controls className="hidden" onTimeUpdate={timeUpdate} id={`audio${id}`} src={url} ref={audioRef} />
                 <AudioVisualizer
                     ref={visualizerRef}
