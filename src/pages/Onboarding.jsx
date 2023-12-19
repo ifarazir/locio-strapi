@@ -19,7 +19,7 @@ import Uppy from "@uppy/core";
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import '@uppy/audio/dist/style.min.css';
-import Tus from "@uppy/tus";
+import XHRUpload from "@uppy/xhr-upload";
 
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
@@ -118,8 +118,10 @@ export function NewVoiceDrawer(props) {
         }
     }
 
-    const uppy = new Uppy().use(Audio).use(Tus, { endpoint: 'https://locio.karensadev.com/api/files/upload' })
-
+    const uppy = new Uppy().use(Audio).use(XHRUpload, {
+        endpoint: 'https://locio.karensadev.com/api/files/upload',
+        method: 'post',
+    })
 
     // Drawer with Framer Motion
     return (
