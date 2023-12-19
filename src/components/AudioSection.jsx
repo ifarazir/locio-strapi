@@ -99,7 +99,7 @@ export default function AudioSection(props) {
                     }
                 </button>
 
-                <button className="flex items-center gap-[6px]" onClick={SubmitLikeDiary}>
+                <button className="flex items-center gap-[6px]">
                     <span className="text-neutral-900 text-xs">{likesCount}</span>
                     {
                         isLikeUploading ?
@@ -109,9 +109,9 @@ export default function AudioSection(props) {
                             :
                             // if isLiked is true, show Heart, else show HeartOutline
                             isLiked ?
-                                <Heart color={'#ef4444'} width={'36px'} />
+                                <Heart color={'#ef4444'} width={'36px'} onClick={SubmitLikeDiary} />
                                 :
-                                <HeartOutline color={'#404040'} width={'36px'} />
+                                <HeartOutline color={'#404040'} width={'36px'} onClick={SubmitLikeDiary} />
                     }
                 </button>
             </div>
