@@ -141,7 +141,7 @@ export function NewVoiceDrawer(props) {
                 if (diaryResponse.response.status == 'success') {
                     setIsVoiceSubmitting(false);
 
-                    toast.success('خاطره شما با موفقیت ثبت شد');
+                    toast.success('صدای شما با موفقیت ثبت شد');
                     setIsOpen(false);
                     window.location.reload();
                 }

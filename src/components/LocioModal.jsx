@@ -48,7 +48,7 @@ export default function LocioModal({ isOpen, onClose, cafe }) {
 
                                 <div className="rounded-md bg-red-50 p-4">
                                     <div className="flex">
-                                        <p className="text-sm font-semibold text-red-600">با کلیک بر روی دکمه قرمز رنگ در قسمت پایین صفحه، می‌توانید خاطره خود را ثبت کنید.</p>
+                                        <p className="text-sm font-semibold text-red-600">با کلیک بر روی دکمه قرمز رنگ در قسمت پایین صفحه، می‌توانید صدای خود را ثبت کنید.</p>
                                     </div>
                                 </div>
                             </div>
