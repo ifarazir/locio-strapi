@@ -3,6 +3,7 @@ import { useAuthHeader } from "react-auth-kit";
 import { Dialog, Transition } from "@headlessui/react";
 import { TbCheck } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 export default function LocioModal({ isOpen, onClose, cafe }) {
 
@@ -43,14 +44,16 @@ export default function LocioModal({ isOpen, onClose, cafe }) {
                     <div className="z-30 fixed inset-0 flex w-screen items-center justify-center p-4">
                         <Dialog.Panel className={'relative mx-auto w-full max-w-xl bg-white rounded-xl'}>
                             <div className="px-5 py-10 shadow-sm">
-                                <Dialog.Description className={'text-lg font-semibold'}>
-                                    مکان و صدا دو جز یادآوری خاطرات و داستان‌های ماست. این داستان‌ها بدون حضور اتفاق و یا هم‌دستی دوستان ما بوجود نمی‌آیند و پیوند این داستان‌ها به مکانی مشخص عنصری است برای یادآوری آن‌ها و تجربه‌ی مجدد لحظه.
-                                    شما می‌توانید با اسکن این کد داستان‌ها و گفت‌ و گوهای خود در کافه نولان را بگویید و یا داستان دیگران را بشنوید.
-
+                                <Dialog.Description className={'text-lg font-semibold leading-[36px] mb-5'}>
+                                    مکان و صدا، دو جز اساسی برای یادآوری خاطرات و داستان‌های ما هستند. این داستان‌ها به وجود نمی‌آیند مگر با حضور و هم‌ صدايي دوستان ما.
+                                    ارتباط این داستان‌ها با یک مکان خاص، عنصری بی‌نظیر برای یادآوری و تجربه‌ی مجدد لحظات است.
                                 </Dialog.Description>
-                                <p className="mt-3 text-lg font-bold">
-                                    با کلیک بر روی دکمه قرمز رنگ میکروفن در قسمت پایین صفحه، می‌توانید خاطره خود را از این مکان ثبت کنید.
-                                </p>
+
+                                <div className="rounded-md bg-red-50 p-4">
+                                    <div className="flex">
+                                        <p className="text-sm font-semibold text-red-600">با کلیک بر روی دکمه قرمز رنگ در قسمت پایین صفحه، می‌توانید خاطره خود را ثبت کنید.</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <button

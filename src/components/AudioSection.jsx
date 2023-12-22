@@ -42,9 +42,9 @@ export default function AudioSection(props) {
                 setLikesCount(likesCount + 1);
             }
             else {
-                toast.error(response?.response?.response?.data?.message);
+                toast.error(response?.response?.message);
             }
-        }else {
+        } else {
             setLikeUploading(false);
             setLikesCount(likesCount - 1);
         }
@@ -70,7 +70,7 @@ export default function AudioSection(props) {
 
     return (
         <section index={id} className={"mx-auto bg-white md:rounded-[12px] max-w-4xl px-[16px] py-[20px] shadow-lg rounded-xl transition-all " + (playing ? 'scale-105 -translate-y-[5px]' : '')}>
-            <div className="flex flex-col justify-center overflow-hidden items-center mb-3">
+            <div className="flex flex-col justify-center items-center mb-3">
                 <audio controls className="hidden" onTimeUpdate={timeUpdate} id={`audio${id}`} src={url} ref={audioRef} />
                 <AudioVisualizer
                     ref={visualizerRef}
@@ -99,7 +99,7 @@ export default function AudioSection(props) {
                     }
                 </button>
 
-                <button className="flex items-center gap-[6px]">
+                <button className="flex items-center gap-[6px]" onClick={SubmitLikeDiary}>
                     <span className="text-neutral-900 text-xs">{likesCount}</span>
                     {
                         isLikeUploading ?
@@ -109,9 +109,9 @@ export default function AudioSection(props) {
                             :
                             // if isLiked is true, show Heart, else show HeartOutline
                             isLiked ?
-                                <Heart color={'#ef4444'} width={'36px'} onClick={SubmitLikeDiary} />
+                                <Heart color={'#ef4444'} width={'36px'} />
                                 :
-                                <HeartOutline color={'#404040'} width={'36px'} onClick={SubmitLikeDiary} />
+                                <HeartOutline color={'#404040'} width={'36px'} />
                     }
                 </button>
             </div>

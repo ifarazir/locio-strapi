@@ -12,14 +12,6 @@ import { getWaveBlob } from "webm-to-wav-converter";
 import { APIUpload } from "../api/uploader";
 import { toast } from "react-toastify";
 
-
-import { Dashboard } from "@uppy/react";
-import Audio from "@uppy/audio";
-import Uppy from "@uppy/core";
-import '@uppy/core/dist/style.min.css';
-import '@uppy/dashboard/dist/style.min.css';
-import '@uppy/audio/dist/style.min.css';
-
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
 function convertToPersianNumber(input) {
@@ -43,16 +35,17 @@ export function NewVoiceDrawer(props) {
     const [isVoiceSubmitting, setIsVoiceSubmitting] = useState(false);
 
     const recorderControls = useAudioRecorder()
-    const addAudioElement = (blob) => {
+    const addAudioElement = (blob) => {        
         const url = URL.createObjectURL(blob);
         const audio = document.createElement("audio");
         audio.src = url;
         audio.controls = true;
         document.querySelector('#player-box').append(audio);
+        document.querySelector('#file-size').append(blob.size / 1024 + " KB");
         setVoice(blob);
     };
 
-    async function handleDiarySubmit(voiceFile) {
+    async function handleDiarySubmit() {
         setIsVoiceSubmitting(true);
 
         if (!document.querySelector('input[name="name"]').value) {
@@ -61,13 +54,14 @@ export function NewVoiceDrawer(props) {
             return;
         }
 
-        // if (!recorderControls.recordingBlob) {
-        //     toast.error('.لطفا ابتدا یک صدا ضبط کنید');
-        //     setIsVoiceSubmitting(false);
-        //     return;
-        // }
+        if (!recorderControls.recordingBlob) {
+            toast.error('.لطفا ابتدا یک صدا ضبط کنید');
+            setIsVoiceSubmitting(false);
+            return;
+        }
 
-        const fileuploadresponse = await APIUpload(voiceFile).then(async (voiceID) => {
+        const wavBlob = await getWaveBlob(voice, true);
+        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
             console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
@@ -115,15 +109,6 @@ export function NewVoiceDrawer(props) {
             document.querySelector('#player-box').innerHTML = '';
         }
     }
-
-    const uppy = new Uppy().use(Audio);
-
-    uppy.on('file-added', (file) => {
-        handleDiarySubmit(file.data);
-
-        console.log('Added file', file);
-    });
-
 
     // Drawer with Framer Motion
     return (
@@ -192,23 +177,26 @@ export function NewVoiceDrawer(props) {
                                     <span className="text-xs text-right text-neutral-400 px-3 mt-1">شما می‌توانید فایل صدایتان را با وارد کردن ایمیل دریافت کنید.</span>
                                 </div>
 
-                                <Dashboard uppy={uppy} plugins={['Audio']} height={200} />
-
-                                {/* <div className="hidden">
+                                <div className="hidden">
                                     <AudioRecorder
                                         onRecordingComplete={(blob) => addAudioElement(blob)}
                                         recorderControls={recorderControls}
-                                        showVisualizer={true}
+                                        audioTrackConstraints={{
+                                            noiseSuppression: true,
+                                            echoCancellation: true,
+                                        }}
+                                        downloadFileExtension={"wav"}
                                     />
-                                </div> */}
+                                </div>
 
-                                {/* <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
+                                <div className="flex flex-col px-3 py-5 bg-neutral-100 rounded-[4px] text-center">
                                     {
                                         recorderControls.isRecording ?
                                             (<p className="text-4xl font-light mb-3">
                                                 {secondsToMinutesAndSeconds(recorderControls.recordingTime)}
                                             </p>) : (recorderControls.recordingBlob && <div id="player-box" className="mx-auto border-2 rounded-full mb-3"></div>)
                                     }
+                                    <p className="text-sm text-neutral-400" id="file-size" dir="ltr"></p>
                                     <div className="flex items-center justify-center gap-x-5">
                                         {
                                             recorderControls.isRecording ?
@@ -226,7 +214,7 @@ export function NewVoiceDrawer(props) {
                                             </button>
                                         }
                                     </div>
-                                </div> */}
+                                </div>
 
                             </div>
 
@@ -235,6 +223,7 @@ export function NewVoiceDrawer(props) {
                                     type="button"
                                     disabled={isVoiceSubmitting}
                                     className="w-full justify-center items-center text-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 font-bold"
+                                    onClick={handleDiarySubmit}
                                 >
                                     {
                                         isVoiceSubmitting ?
