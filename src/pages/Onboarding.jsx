@@ -7,10 +7,30 @@ import { GetDiaries, StoreDiary } from "../api/diary";
 import { Transition, Dialog } from "@headlessui/react";
 import Input from "../utils/Input";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
-import S3Uploader from "../components/S3Uploader";
 import { getWaveBlob } from "webm-to-wav-converter";
-import { APIUpload } from "../api/uploader";
 import { toast } from "react-toastify";
+import axios from "axios";
+
+axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+    if (error.response.status === 401) {
+        //place your reentry code
+    }
+    return error;
+});
+
+axios.defaults.withCredentials = true;
+const youzAxios = axios.create({
+    withCredentials: true,
+    baseURL: import.meta.env.VITE_API_BASE,
+    maxContentLength: 10000000,
+    maxBodyLength: 10000000,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+    },
+});
 
 var persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 var persianMap = persianDigits.split("");
@@ -33,9 +53,10 @@ export function NewVoiceDrawer(props) {
 
     const [voice, setVoice] = useState(null);
     const [isVoiceSubmitting, setIsVoiceSubmitting] = useState(false);
+    const [percent, setPercent] = useState(0);
 
     const recorderControls = useAudioRecorder()
-    const addAudioElement = (blob) => {        
+    const addAudioElement = (blob) => {
         const url = URL.createObjectURL(blob);
         const audio = document.createElement("audio");
         audio.src = url;
@@ -44,6 +65,43 @@ export function NewVoiceDrawer(props) {
         document.querySelector('#file-size').append(blob.size / 1024 + " KB");
         setVoice(blob);
     };
+
+    const APIUpload = async (voiceFile) => {
+
+        // create file blob with filename
+        // create file name from timestamp with .wav extension
+        const fileName = new Date().getTime() + '.wav';
+
+        const file = new File([voiceFile], fileName, {
+            type: voiceFile.type,
+        });
+
+        return youzAxios.post('/api/files/upload', {
+            file: file
+        }, {
+            onUploadProgress: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percent = Math.floor((loaded * 100) / total);
+                setPercent(percent);
+
+                if (percent === 100) {
+                    setTimeout(() => {
+                        setPercent(0);
+                    }, 1000);
+
+                }
+            }
+        }).then(async (response) => {
+            return response.data.file.id
+        }).catch((response) => {
+            return {
+                status: 'error',
+                variant: 'error',
+                message: response.data.message,
+                response: response
+            }
+        })
+    }
 
     async function handleDiarySubmit() {
         setIsVoiceSubmitting(true);
@@ -137,6 +195,12 @@ export function NewVoiceDrawer(props) {
                     leaveTo="translate-y-full"
                 >
                     <div className="flex min-h-full items-end justify-center text-center">
+
+                        {/* percent of upload as red progress bar on top of the screen */}
+                        {
+                            percent > 0 && <div className="fixed top-0 left-0 w-full h-[3px] bg-red-100 shadow shadow-red-100" style={{ width: percent + '%' }}></div>
+                        }
+
                         <Dialog.Panel className="relative max-w-md transform overflow-hidden rounded-t-2xl p-6 bg-white w-full transition-all">
                             <div className="flex items-center justify-between mb-5">
                                 <Dialog.Title

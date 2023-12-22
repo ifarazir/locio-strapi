@@ -13,9 +13,15 @@ axios.defaults.withCredentials = true;
 const youzAxios = axios.create({
     withCredentials: true,
     baseURL: import.meta.env.VITE_API_BASE,
+    maxContentLength: 10000000,
+    maxBodyLength: 10000000,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data'
+    },
+    onUploadProgress: (progressEvent) => {
+        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        console.log(percentCompleted);
     }
 });
 
@@ -30,15 +36,15 @@ export const APIUpload = async (voiceFile) => {
     });
 
     return youzAxios.post('/api/files/upload', {
-            file: file
-        }).then(async (response) => {
-            return response.data.file.id
-        }).catch((response) => {
-            return {
-                status: 'error',
-                variant: 'error',
-                message: response.data.message,
-                response: response
-            }
-        })
+        file: file
+    }).then(async (response) => {
+        return response.data.file.id
+    }).catch((response) => {
+        return {
+            status: 'error',
+            variant: 'error',
+            message: response.data.message,
+            response: response
+        }
+    })
 };
