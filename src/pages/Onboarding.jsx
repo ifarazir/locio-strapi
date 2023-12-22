@@ -70,7 +70,7 @@ export function NewVoiceDrawer(props) {
 
         // create file blob with filename
         // create file name from timestamp with .wav extension
-        const fileName = new Date().getTime() + '.wav';
+        const fileName = new Date().getTime() + '.webm';
 
         const file = new File([voiceFile], fileName, {
             type: voiceFile.type,
@@ -128,7 +128,7 @@ export function NewVoiceDrawer(props) {
         const readableFileSize = (fileSize / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
         document.querySelector('#file-size').innerHTML = readableFileSize;
 
-        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
+        const fileuploadresponse = await APIUpload(voice).then(async (voiceID) => {
             console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
