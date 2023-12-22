@@ -27,6 +27,11 @@ export default function AudioSection(props) {
 
     const timeUpdate = (event) => {
         setDuration(event.target.currentTime);
+
+        // if voice is finished, stop playing
+        if (event.target.currentTime === event.target.duration) {
+            setPlay(false);
+        }
     }
 
     async function SubmitLikeDiary() {
