@@ -125,7 +125,7 @@ export function NewVoiceDrawer(props) {
         }
 
         const wavBlob = await getWaveBlob(voice, true);
-        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
+        const fileuploadresponse = await APIUpload(voice).then(async (voiceID) => {
             console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
@@ -252,6 +252,7 @@ export function NewVoiceDrawer(props) {
                                         onRecordingComplete={(blob) => addAudioElement(blob)}
                                         recorderControls={recorderControls}
                                         audioTrackConstraints={{
+                                            channelCount: 1,
                                             sampleRate: 44100,
                                             sampleSize: 16,
                                         }}
