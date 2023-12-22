@@ -48,10 +48,6 @@ export default function AudioSection(props) {
                 toast.error(response?.response?.response?.data?.message);
                 setLikeUploading(false);
             }
-        } else {
-            setLikeUploading(false);
-            setLike(!isLiked);
-            setLikesCount(likesCount - 1);
         }
     }
 
