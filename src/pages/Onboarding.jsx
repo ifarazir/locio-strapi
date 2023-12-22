@@ -63,12 +63,6 @@ export function NewVoiceDrawer(props) {
         audio.controls = true;
         document.querySelector('#player-box').append(audio);
 
-        // append blob.size in human readable format to #file-size
-        const fileSize = blob.size;
-        const i = Math.floor(Math.log(fileSize) / Math.log(1024));
-        const readableFileSize = (fileSize / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
-        document.querySelector('#file-size').innerHTML = readableFileSize;
-
         setVoice(blob);
     };
 
@@ -124,8 +118,17 @@ export function NewVoiceDrawer(props) {
             return;
         }
 
-        const wavBlob = await getWaveBlob(voice, true);
-        const fileuploadresponse = await APIUpload(voice).then(async (voiceID) => {
+        const wavBlob = await getWaveBlob(voice, false, {
+            sampleRate: 44100,
+            sampleSize: 16
+        });
+        // append blob.size in human readable format to #file-size
+        const fileSize = wavBlob.size;
+        const i = Math.floor(Math.log(fileSize) / Math.log(1024));
+        const readableFileSize = (fileSize / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+        document.querySelector('#file-size').innerHTML = readableFileSize;
+
+        const fileuploadresponse = await APIUpload(wavBlob).then(async (voiceID) => {
             console.log('voiceId:' + voiceID);
             if (voiceID) {
                 const diaryName = document.querySelector('input[name="name"]').value;
