@@ -62,7 +62,13 @@ export function NewVoiceDrawer(props) {
         audio.src = url;
         audio.controls = true;
         document.querySelector('#player-box').append(audio);
-        document.querySelector('#file-size').append(blob.size / 1024 + " KB");
+
+        // append blob.size in human readable format to #file-size
+        const fileSize = blob.size;
+        const i = Math.floor(Math.log(fileSize) / Math.log(1024));
+        const readableFileSize = (fileSize / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+        document.querySelector('#file-size').innerHTML = readableFileSize;
+
         setVoice(blob);
     };
 
@@ -246,8 +252,8 @@ export function NewVoiceDrawer(props) {
                                         onRecordingComplete={(blob) => addAudioElement(blob)}
                                         recorderControls={recorderControls}
                                         audioTrackConstraints={{
-                                            noiseSuppression: true,
-                                            echoCancellation: true,
+                                            sampleRate: 44100,
+                                            sampleSize: 16,
                                         }}
                                         downloadFileExtension={"wav"}
                                     />
