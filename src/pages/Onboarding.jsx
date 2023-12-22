@@ -252,7 +252,6 @@ export function NewVoiceDrawer(props) {
                                         onRecordingComplete={(blob) => addAudioElement(blob)}
                                         recorderControls={recorderControls}
                                         audioTrackConstraints={{
-                                            channelCount: 1,
                                             sampleRate: 44100,
                                             sampleSize: 16,
                                         }}
