@@ -40,11 +40,16 @@ export default function CafeInfoModal({ isOpen, onClose }) {
                 >
                     <div className="z-30 fixed inset-0 flex w-screen items-center justify-center p-4">
                         <Dialog.Panel className={'relative mx-auto w-full max-w-md bg-white rounded-xl'}>
-                            <div className="px-10 py-10 shadow-sm">
+                            <div className="px-10 py-10 shadow-sm w-full">
                                 <Dialog.Title className={'text-xl font-bold mt-2 mb-5'}>ردپای صدای خاطرات، در جغرافیای حضورتان</Dialog.Title>
                                 <Dialog.Description className={'text-lg'}>
-                                    لوکیو تجربه‌ای از داستان‌های صوتی مکان محور است که به شما امکان ضبط، اشتراک و شنیدن داستان‌ها، گفت‌ و گوها و آواهای موجود در لحظه‌ را می‌دهد.
+                                    لوکیو، پلتفرمی است که به شما امکان ‌ضبط و نشر داستان‌ها، گفتگوها و حتی صداهای محیط اطرافتان را می‌دهد. اینجا مکانی است که شما می‌توانید داستان‌های خود را به اشتراک بگذارید و همچنین به داستان‌‌های دیگران با روایت خودشان گوش‌ کنید.<br />
+
+                                    شما می‌توانید از طریق ایمیل زیر با ما در ارتباط باشید:
                                 </Dialog.Description>
+
+                                <a href="mailto:locationalaudiostorytelling@gmail.com" className="mt-3 flex items-center justify-center text-sm bg-red-500 text-white tracking-wide w-full text-center py-3 font-semibold rounded-xl">locationalaudiostorytelling@gmail.com
+</a>
                             </div>
 
                             <button
