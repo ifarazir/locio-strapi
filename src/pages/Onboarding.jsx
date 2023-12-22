@@ -83,13 +83,6 @@ export function NewVoiceDrawer(props) {
                 const { loaded, total } = progressEvent;
                 let percent = Math.floor((loaded * 100) / total);
                 setPercent(percent);
-
-                if (percent === 100) {
-                    setTimeout(() => {
-                        setPercent(0);
-                    }, 1000);
-
-                }
             }
         }).then(async (response) => {
             return response.data.file.id
@@ -204,12 +197,6 @@ export function NewVoiceDrawer(props) {
                     leaveTo="translate-y-full"
                 >
                     <div className="flex min-h-full items-end justify-center text-center">
-
-                        {/* percent of upload as red progress bar on top of the screen */}
-                        {
-                            percent > 0 && <div className="fixed top-0 left-0 w-full h-[3px] bg-red-100 shadow shadow-red-100" style={{ width: percent + '%' }}></div>
-                        }
-
                         <Dialog.Panel className="relative max-w-md transform overflow-hidden rounded-t-2xl p-6 bg-white w-full transition-all">
                             <div className="flex items-center justify-between mb-5">
                                 <Dialog.Title
@@ -300,14 +287,17 @@ export function NewVoiceDrawer(props) {
                                 >
                                     {
                                         isVoiceSubmitting ?
-                                            <svg className="animate-spin mx-auto h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                    strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor"
-                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
-                                                </path>
-                                            </svg> : 'ارسال'
+                                            <div className="flex items-center justify-center gap-5">
+                                                <svg className="animate-spin mx-auto h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                        strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                                                    </path>
+                                                </svg>
+                                                <span>{percent} / 100</span>
+                                            </div> : 'ارسال'
                                     }
                                 </button>
                             </div>
