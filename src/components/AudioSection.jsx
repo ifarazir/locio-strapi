@@ -2,9 +2,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Heart, HeartOutline, Pause, Play } from "react-ionicons";
-import Visualizer from "../utils/Visualizer";
 import { AudioVisualizer } from "react-audio-visualize";
-import { toJalaali } from "jalaali-js";
 import { LikeDiary } from "../api/diary";
 import { toast } from "react-toastify";
 import { CgSpinner } from "react-icons/cg";
@@ -86,7 +84,7 @@ export default function AudioSection(props) {
                 {/* <Visualizer url={url} currentTime={duration} /> */}
             </div>
             <div className="flex items-center justify-between">
-                <p className="text-xs flex items-center gap-4 w-max"><span className="font-bold text-base">{name} | </span> <span>{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</span></p>
+                <p className="text-xs flex items-center w-max"><span className="font-bold text-base">{name} | </span> <span className="mr-1">{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</span></p>
                 <button className=" w-[36px] h-[36px] flex items-center justify-center rounded-full"
                     onClick={() => {
                         setPlay(!playing);

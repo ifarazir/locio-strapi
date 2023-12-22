@@ -1,9 +1,6 @@
-import { Fragment, useEffect, useState } from "react";
-import { useAuthHeader } from "react-auth-kit";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { TbCheck } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 export default function LocioModal({ isOpen, onClose, cafe }) {
 
