@@ -47,7 +47,7 @@ export default function CafeInfoModal({ isOpen, onClose }) {
 
                                 </Dialog.Description>
                                 <span className="text-lg">
-                                    از طریق ایمیل زیر با ما در ارتباط باشید:
+                                    می‌توانید از طریق ایمیل زیر با ما در ارتباط باشید:
                                 </span>
 
                                 <a href="mailto:locationalaudiostorytelling@gmail.com" className="mt-3 flex items-center justify-center text-sm bg-red-500 text-white tracking-wide w-full text-center py-3 font-semibold rounded-xl">locationalaudiostorytelling@gmail.com</a>

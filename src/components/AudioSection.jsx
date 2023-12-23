@@ -35,8 +35,8 @@ export default function AudioSection(props) {
     }
 
     async function SubmitLikeDiary() {
-        setLikeUploading(true);
         if (!isLiked) {
+            setLikeUploading(true);
             const response = await LikeDiary(props.id);
 
             if (response?.response?.data?.status === 'success') {
