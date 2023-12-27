@@ -59,6 +59,19 @@ export default function AudioSection(props) {
     const [isLiked, setLike] = useState(is_liked);
     const [isLikeUploading, setLikeUploading] = useState(false);
 
+    // Only use MediaElement backend for Safari
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '') ||
+        /iPad|iPhone|iPod/i.test(navigator.userAgent || '');
+
+    const wavesurferArgs = {
+        container: document.getElementById('wavesurferContainerInternal'),
+        plugins
+    };
+    if (isSafari) {
+        wavesurferArgs.backend = 'MediaElement';
+    }
+    _wavesurfer = window.WaveSurfer.create(wavesurferArgs);
+
     async function SubmitLikeDiary() {
         if (!isLiked) {
             setLikeUploading(true);
