@@ -13,16 +13,26 @@ import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
 // WaveSurfer hook
 const useWavesurfer = (containerRef, options) => {
     const [wavesurfer, setWavesurfer] = useState(null)
-    
+
+    const audio = new Audio();
+        
     // Initialize wavesurfer when the container mounts
     // or any of the props change
     useEffect(() => {
         if (!containerRef.current) return
-
+        
         // height = { 100}
         // waveColor = "#e4e4e4"
         // progressColor = "#f76565"
         // cursorColor = "rgba(0,0,0,0)"
+        
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '') ||
+        /iPad|iPhone|iPod/i.test(navigator.userAgent || '');
+        
+        if(isSafari) {
+            audio.src = options.url;
+            audio.load();
+        }
 
         const ws = WaveSurfer.create({
             ...options,
@@ -32,15 +42,17 @@ const useWavesurfer = (containerRef, options) => {
             cursorColor: "rgba(0,0,0,0)",
             barWidth: 3,
             container: containerRef.current,
+            backend: isSafari ? 'MediaElement' : 'WebAudio',
+            media: audio,
         })
-
+        
         setWavesurfer(ws)
-
+        
         return () => {
             ws.destroy()
         }
     }, [options, containerRef])
-
+    
     return wavesurfer
 }
 
@@ -53,12 +65,12 @@ export default function AudioSection(props) {
         likes_count,
         is_liked = false
     } = props;
-
+    
     const [playing, setPlay] = useState(false);
     const [likesCount, setLikesCount] = useState(likes_count);
     const [isLiked, setLike] = useState(is_liked);
     const [isLikeUploading, setLikeUploading] = useState(false);
-
+    
     async function SubmitLikeDiary() {
         if (!isLiked) {
             setLikeUploading(true);
@@ -83,11 +95,12 @@ export default function AudioSection(props) {
     const containerRef = useRef()
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
+
     const wavesurfer = useWavesurfer(containerRef, props)
 
     // On play button click
     const onPlayClick = useCallback(() => {
-        console.log(wavesurfer.play());
+        if (!wavesurfer) return
         wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
     }, [wavesurfer])
 
