@@ -1,11 +1,48 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Heart, HeartOutline, Pause, Play } from "react-ionicons";
-import { AudioVisualizer } from "react-audio-visualize";
+// import { AudioVisualizer } from "react-audio-visualize";
 import { LikeDiary } from "../api/diary";
 import { toast } from "react-toastify";
 import { CgSpinner } from "react-icons/cg";
+
+import WaveSurfer from 'wavesurfer.js'
+import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
+
+// WaveSurfer hook
+const useWavesurfer = (containerRef, options) => {
+    const [wavesurfer, setWavesurfer] = useState(null)
+
+    // Initialize wavesurfer when the container mounts
+    // or any of the props change
+    useEffect(() => {
+        if (!containerRef.current) return
+
+        // height = { 100}
+        // waveColor = "#e4e4e4"
+        // progressColor = "#f76565"
+        // cursorColor = "rgba(0,0,0,0)"
+
+        const ws = WaveSurfer.create({
+            ...options,
+            height: 100,
+            waveColor: "#e4e4e4",
+            progressColor: "#f76565",
+            cursorColor: "rgba(0,0,0,0)",
+            barWidth: 3,
+            container: containerRef.current,
+        })
+
+        setWavesurfer(ws)
+
+        return () => {
+            ws.destroy()
+        }
+    }, [options, containerRef])
+
+    return wavesurfer
+}
 
 export default function AudioSection(props) {
     const {
@@ -21,18 +58,6 @@ export default function AudioSection(props) {
     const [likesCount, setLikesCount] = useState(likes_count);
     const [isLiked, setLike] = useState(is_liked);
     const [isLikeUploading, setLikeUploading] = useState(false);
-    const [duration, setDuration] = useState(0);
-    const [blob, setBlob] = useState(null)
-    const visualizerRef = useRef(null)
-
-    const timeUpdate = (event) => {
-        setDuration(event.target.currentTime);
-
-        // if voice is finished, stop playing
-        if (event.target.currentTime === event.target.duration) {
-            setPlay(false);
-        }
-    }
 
     async function SubmitLikeDiary() {
         if (!isLiked) {
@@ -51,52 +76,52 @@ export default function AudioSection(props) {
         }
     }
 
-    const audioRef = useRef();
-
-
     useEffect(() => {
         setPlay(false);
-
-        if (url) {
-            // fetch as api for cors problem
-            fetch(url)
-                .then((response) => response.blob())
-                .then((blob) => {
-                    setBlob(blob);
-                })
-                .catch((err) => console.log(err));
-        }
     }, [url]);
 
+    const containerRef = useRef()
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [currentTime, setCurrentTime] = useState(0)
+    const wavesurfer = useWavesurfer(containerRef, props)
+
+    // On play button click
+    const onPlayClick = useCallback(() => {
+        wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
+    }, [wavesurfer])
+
+    // Initialize wavesurfer when the container mounts
+    // or any of the props change
+    useEffect(() => {
+        if (!wavesurfer) return
+
+        setCurrentTime(0)
+        setIsPlaying(false)
+
+        const subscriptions = [
+            wavesurfer.on('play', () => setIsPlaying(true)),
+            wavesurfer.on('pause', () => setIsPlaying(false)),
+            wavesurfer.on('timeupdate', (currentTime) => setCurrentTime(currentTime)),
+        ]
+
+        return () => {
+            subscriptions.forEach((unsub) => unsub())
+        }
+    }, [wavesurfer])
 
     return (
         <section index={id} className={"mx-auto bg-white md:rounded-[12px] max-w-4xl px-[16px] py-[20px] shadow-lg rounded-xl transition-all space-y-2" + (playing ? 'scale-105 -translate-y-[5px]' : '')}>
             <span className="font-bold text-base">{name}</span>
             <div className="flex flex-col justify-center items-center mb-3 bg-neutral-100/80 rounded-xl ">
-                <audio controls className="hidden" onTimeUpdate={timeUpdate} id={`audio${id}`} src={url} ref={audioRef} />
-                <AudioVisualizer
-                    ref={visualizerRef}
-                    blob={blob}
-                    width={300}
-                    height={75}
-                    barWidth={2}
-                    currentTime={duration}
-                    barPlayedColor='#f76565'
-                    barColor='#e4e4e4'
-                    gap={0}
-                />
-                {/* <Visualizer url={url} currentTime={duration} /> */}
+                <div ref={containerRef} style={{ minHeight: '120px', width: '100%', padding: '6px 16px' }} />
             </div>
             <div className="flex items-center justify-between">
                 <p className="text-xs flex items-center w-max"><span className="mr-1">{new Date(createdAt).toLocaleDateString('fa-IR', { day: "numeric", month: "short" })}</span></p>
                 <button className=" w-[36px] h-[36px] flex items-center justify-center rounded-full"
-                    onClick={() => {
-                        setPlay(!playing);
-                        playing ? audioRef.current.pause() : audioRef.current.play();
-                    }}
+                    onClick={onPlayClick}
                 >
                     {
-                        playing ?
+                        isPlaying ?
                             <Pause color={'#404040'} width={'36px'} /> : <Play color={'#404040'} width={'36px'} />
                     }
                 </button>
