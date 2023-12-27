@@ -85,6 +85,7 @@ export default function AudioSection(props) {
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
     const wavesurfer = useWavesurfer(containerRef, props)
+    const [blob, setBlob] = useState(null)
 
     // On play button click
     const onPlayClick = useCallback(() => {
@@ -109,6 +110,25 @@ export default function AudioSection(props) {
             subscriptions.forEach((unsub) => unsub())
         }
     }, [wavesurfer])
+
+    useEffect(() => {
+        if (!wavesurfer) return
+
+        wavesurfer.load(url)
+
+        return () => {
+            wavesurfer.unAll()
+        }
+    }, [wavesurfer, url])
+
+    useEffect(() => {
+        // fetch url 
+        fetch(url)
+            .then(res => res.blob())
+            .then(blob => {
+                setBlob(blob)
+            })
+    }, [url])
 
     return (
         <section index={id} className={"mx-auto bg-white md:rounded-[12px] max-w-4xl px-[16px] py-[20px] shadow-lg rounded-xl transition-all space-y-2" + (playing ? 'scale-105 -translate-y-[5px]' : '')}>
