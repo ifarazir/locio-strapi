@@ -90,7 +90,7 @@ export default function AudioSection(props) {
     // On play button click
     const onPlayClick = useCallback(() => {
         console.log(wavesurfer);
-        wavesurfer?.isPlaying() ? wavesurfer?.pause() : wavesurfer?.play()
+        wavesurfer?.isPlaying() ? wavesurfer?.pause() : (wavesurfer?.play() ? wavesurfer?.play() : wavesurfer?.listeners?.play());
     }, [wavesurfer])
 
     // Initialize wavesurfer when the container mounts
