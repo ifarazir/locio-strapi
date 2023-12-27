@@ -13,6 +13,10 @@ import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
 // WaveSurfer hook
 const useWavesurfer = (containerRef, options) => {
     const [wavesurfer, setWavesurfer] = useState(null)
+    
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '') ||
+        /iPad|iPhone|iPod/i.test(navigator.userAgent || '');
+    const backend = isSafari ? 'MediaElement' : 'WebAudio';
 
     // Initialize wavesurfer when the container mounts
     // or any of the props change
@@ -32,6 +36,7 @@ const useWavesurfer = (containerRef, options) => {
             cursorColor: "rgba(0,0,0,0)",
             barWidth: 3,
             container: containerRef.current,
+            backend: backend,
         })
 
         setWavesurfer(ws)
@@ -58,19 +63,6 @@ export default function AudioSection(props) {
     const [likesCount, setLikesCount] = useState(likes_count);
     const [isLiked, setLike] = useState(is_liked);
     const [isLikeUploading, setLikeUploading] = useState(false);
-
-    // Only use MediaElement backend for Safari
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '') ||
-        /iPad|iPhone|iPod/i.test(navigator.userAgent || '');
-
-    const wavesurferArgs = {
-        container: document.getElementById('wavesurferContainerInternal'),
-        plugins
-    };
-    if (isSafari) {
-        wavesurferArgs.backend = 'MediaElement';
-    }
-    _wavesurfer = window.WaveSurfer.create(wavesurferArgs);
 
     async function SubmitLikeDiary() {
         if (!isLiked) {
