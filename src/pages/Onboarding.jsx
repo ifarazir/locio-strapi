@@ -315,7 +315,6 @@ export default function OnboardingPage() {
 
     useEffect(() => {
         ReactGA.initialize("G-5L72KZBSLF");
-        console.log('GA initialized');
     }, []);
 
     const [voices, setVoices] = useState([]);
@@ -348,7 +347,15 @@ export default function OnboardingPage() {
 
             <div className="z-20 fixed bottom-0 w-full flex justify-center items-center border-t-2 h-[48px] bg-white rounded-t-3xl">
                 <button className="absolute w-fit top-0 -translate-y-1/2 px-[32px] h-[54px] flex items-center justify-center bg-red-500 hover:bg-red-700 text-white rounded-full"
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                        setIsOpen(true)
+                        // pass ReactGA.event for record_modal_oppened event name
+                        ReactGA.event({
+                            category: "User",
+                            action: "record_modal_oppened",
+                            label: "User opened record modal",
+                        });
+                    }}
                 >
                     <Mic color="white" height="24px" width="24px" />
                 </button>
