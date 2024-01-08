@@ -98,6 +98,12 @@ export function NewVoiceDrawer(props) {
     }
 
     async function handleDiarySubmit() {
+        ReactGA.event({
+            category: "User",
+            action: "record_sent",
+            label: "User submitted record form",
+        });
+
         setIsVoiceSubmitting(true);
 
         if (!document.querySelector('input[name="name"]').value) {
@@ -264,7 +270,14 @@ export function NewVoiceDrawer(props) {
                                                 <button onClick={recorderControls.stopRecording} className="w-[48px] aspect-square rounded-full bg-neutral-700 flex items-center justify-center">
                                                     <Stop color="white" height="24px" width="24px" />
                                                 </button> :
-                                                <button onClick={recorderControls.startRecording} className="w-[48px] aspect-square rounded-full bg-red-500 flex items-center justify-center">
+                                                <button onClick={() => {
+                                                    recorderControls.startRecording();
+                                                    ReactGA.event({
+                                                        category: "User",
+                                                        action: "record_started",
+                                                        label: "User started record",
+                                                    });
+                                                }} className="w-[48px] aspect-square rounded-full bg-red-500 flex items-center justify-center">
                                                     <Mic color="white" height="24px" width="24px" />
                                                 </button>
                                         }
