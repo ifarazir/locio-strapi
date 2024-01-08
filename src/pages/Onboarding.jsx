@@ -10,6 +10,7 @@ import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { getWaveBlob } from "webm-to-wav-converter";
 import { toast } from "react-toastify";
 import axios from "axios";
+import ReactGA from "react-ga4";
 
 axios.interceptors.response.use(response => {
     return response;
@@ -311,6 +312,11 @@ export function NewVoiceDrawer(props) {
 }
 
 export default function OnboardingPage() {
+
+    useEffect(() => {
+        ReactGA.initialize("G-5L72KZBSLF");
+        console.log('GA initialized');
+    }, []);
 
     const [voices, setVoices] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
